@@ -85,7 +85,7 @@ app.use(express.static(path.join(BASE_DIR, 'public')));
 
 const MAX_CHARS = 5000;
 const DETECT_TIMEOUT_MS = 20000;
-const REWRITE_TIMEOUT_MS = 45000;
+const REWRITE_TIMEOUT_MS = 120000;
 const RETRY_COUNT = 2;
 const RETRY_DELAY_MS = 600;
 const VERIFY_CODE_TTL_MINUTES = 3;
@@ -394,6 +394,34 @@ function randomId(prefix) {
 function nowIso() {
   return new Date().toISOString();
 }
+
+// Lightweight API helpers (restored)
+function v1Success(req, res, data) {
+  res.json({ success: true, data });
+}
+function v1Error(req, res, status, code, message) {
+  return res.status(status).json({ success: false, failureCode: code, message });
+}
+function currentStudentId(req, res) {
+  try {
+    const raw = String((req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'local')).split(',')[0].trim();
+    const uid = 'guest_' + raw.replace(/[^a-z0-9]/gi, '_').slice(0, 40);
+    let user = (state.users || []).find(u => u.id === uid);
+    if (!user) {
+      user = { id: uid, role: 'guest', email: '', displayName: '游客', createdAt: nowIso() };
+      state.users.push(user);
+      saveState();
+    }
+    return uid;
+  } catch (_) {
+    return 'guest_local';
+  }
+}
+function summarizeViewer(req, res) {
+  const uid = currentStudentId(req, res);
+  return { user: { id: uid, role: 'guest', email: '', displayName: '游客' }, authenticated: false, quota: null };
+}
+
 
 function hashValue(value) {
   return crypto.createHmac('sha256', APP_SECRET).update(String(value || '')).digest('hex');
@@ -1014,7 +1042,35 @@ async function postChatCompletions(payload, timeoutMs) {
   }
 }
 
-async function callModel({ model, systemPrompt, userPrompt, timeoutMs, usageTracker, maxTokens = 2200, responseFormat }
+async function callModel({ model, systemPrompt, userPrompt, timeoutMs, usageTracker, maxTokens = 2200, responseFormat }) {
+  if (!API_KEY) {
+    const error = new Error('Missing API key');
+    error.status = 401;
+    throw error;
+  }
+  return withRetry(async () => {
+    const data = await postChatCompletions({
+      model,
+      temperature: 0.2,
+      max_tokens: maxTokens,
+      response_format: (responseFormat || { type: 'json_object' }),
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt }
+      ]
+    }, timeoutMs);
+    const content = data?.choices?.[0]?.message?.content || '';
+    trackUsage(usageTracker, data?.usage, [systemPrompt, userPrompt, content]);
+    try {
+      return { json: extractJson(content), usage: data?.usage || null, rawContent: content };
+    } catch (error) {
+      error.rawContent = content;
+      error.failureCode = 'MODEL_JSON_PARSE';
+      throw error;
+    }
+  });
+}
+
 function v1ModelCatch(req, res, error, fallbackCode, fallbackMessage) {
   if (error?.failureCode === 'MODEL_UNAVAILABLE') {
     return v1Error(req, res, error.status || 503, 'MODEL_UNAVAILABLE', error.message || 'DeepSeek 指导模型暂时不可用');
@@ -1031,7 +1087,8 @@ const GUIDANCE_OUTPUT_CONTRACTS = {
   compare: 'improvements:string[]; remainingIssues:array; changedSegments:{segmentId,text}[]; learningNotes:string[]',
   reflection: 'summary:string; learnedSkills:string[]; recurringIssues:string[]; suggestedTrainingFocus:string[]; studentSelfReflection:string; finalTextLength:number',
   styleProfile: 'summary:string; traits:string[]; strengths:string[]; habits:string[]; commonIssues:string[]; suggestions:string[]',
-  guidedWriting: 'outlineTree:{title,theme,children:{nodeId,role,label,focus,children}[]};
+  guidedWriting: 'outlineTree:{title,theme,children:{nodeId,role,label,focus,children}[]}; nextAction:string; highlightedNodeId:string; warnings:string[]'
+};
 
 const GUIDED_WRITING_JSON_SCHEMA = {
   type: 'object',
@@ -1069,8 +1126,7 @@ const GUIDED_WRITING_JSON_SCHEMA = {
   },
   required: ['outlineTree','paragraphGuides','missingMaterialQuestions','nextAction','studentTask']
 };
- paragraphGuides:{paragraphId,role,goal,mustInclude:string[],writingPrompts:string[],starterHint,avoid:string[],suggestedLength}[]; missingMaterialQuestions:{field,question,purpose}[]; nextAction:"answer_more"|"write_paragraph_1"; studentTask:string'
-};
+
 
 app.get('/api/v1/me', (req, res) => {
   const viewer = summarizeViewer(req, res);
@@ -1101,10 +1157,6 @@ app.post('/api/v1/style-profile', async (req, res) => {
     }
 
     const result = await callEssayGuidanceModel('交互式写作引导', input, GUIDANCE_OUTPUT_CONTRACTS.guidedWriting, { maxTokens: 3200 });
-);
-        result.modelMeta = { provider: 'local-fallback', reason: String(err && err.message || 'MODEL_UNAVAILABLE') };
-      } else { throw err; }
-    }
 
     const now = nowIso();
     const profile = {
