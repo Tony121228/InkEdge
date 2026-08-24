@@ -922,13 +922,17 @@ async function withTimeout(promiseFactory, ms) {
 }
 
 function extractJson(content) {
-  try {
-    return JSON.parse(content);
-  } catch (_) {
-    const match = String(content || '').match(/\{[\s\S]*\}/);
-    if (!match) throw new Error('Invalid JSON model response');
-    return JSON.parse(match[0]);
+  const raw = String(content || "").trim();
+  const fence = raw.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+  const body = (fence ? fence[1] : raw).trim();
+  try { return JSON.parse(body); } catch (_) {}
+  const block = body.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
+  if (block) {
+    return JSON.parse(block[1]);
   }
+  const afterColon = body.replace(/^\s*json\s*:/i, "").trim();
+  try { return JSON.parse(afterColon); } catch (_) {}
+  throw new Error("Invalid JSON model response");
 }
 
 function summarizeError(error) {
