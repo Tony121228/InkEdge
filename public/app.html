@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>墨锋InkEdge</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="./config.js"></script>
+  <script defer src="./api-client.js"></script>
+  <script defer src="./theme.js"></script>
+  <script defer src="./app.js"></script>
+  <script defer src="./nav-hotfix.js"></script>
+  <link rel="stylesheet" href="./vendor-auth/auth-widget.css">
+</head>
+<body>
+  <div class="startup-splash" aria-hidden="true">
+    <div class="startup-paper-scene">
+      <div class="startup-paper">
+        <div class="paper-margin"></div>
+        <div class="paper-title">墨锋InkEdge</div>
+        <div class="paper-lines">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="paper-note">构思 · 体检 · 修改 · 复盘</div>
+      </div>
+      <div class="startup-pen"></div>
+    </div>
+  </div>
+
+  <header class="app-header">
+    <div class="brand">
+      <img src="./assets/app-icon.png" alt="" class="brand-icon">
+      <div>
+        <div class="brand-name">墨锋InkEdge</div>
+        <div class="brand-subtitle">构思、体检、局部修改和长期训练</div>
+      </div>
+    </div>
+    <nav class="top-actions" aria-label="页面导航">
+      <p id="guestSignupHint" class="guest-signup-hint hidden">登录后将保留剩余试用额度并赠送算力</p>
+      <button id="authTrigger" class="icon-button" type="button" title="登录或注册"><span id="accountName">游客</span></button>
+      <a href="./account.html">学习档案</a>
+      <button class="icon-button" data-theme-toggle type="button" title="切换模式" aria-label="切换模式">浅</button>
+      <button class="icon-button" id="resetDemoBtn" type="button" title="清空页面" aria-label="清空页面">R</button>
+    </nav>
+  </header>
+
+  <main class="shell">
+    <section class="dashboard-band" aria-labelledby="dashboardTitle">
+      <div class="dashboard-copy">
+        <p class="eyebrow">作文训练工作台</p>
+        <h1 id="dashboardTitle">墨锋InkEdge</h1>
+        <p>先从题目、素材或草稿开始，逐步完成构思、体检、局部修改和复盘。</p>
+      </div>
+      <div class="today-board" aria-label="今日训练">
+        <div class="board-label">今日重点</div>
+        <div class="board-title" id="todayFocus">暂无计划</div>
+        <div class="progress-line"><span id="todayProgress"></span></div>
+        <div class="board-meta" id="todayMeta">等待创建训练任务</div>
+      </div>
+    </section>
+
+    <section class="quick-grid" aria-label="能力总览">
+      <article class="stat-block">
+        <span>当前阶段</span>
+        <strong>未测评</strong>
+      </article>
+      <article class="stat-block">
+        <span>最近短板</span>
+        <strong>暂无</strong>
+      </article>
+      <article class="stat-block">
+        <span>本周完成</span>
+        <strong id="completedCount">0/0</strong>
+      </article>
+      <article class="stat-block">
+        <span>常见问题</span>
+        <strong>暂无</strong>
+      </article>
+    </section>
+
+    <section class="action-grid" aria-label="快速入口">
+      <article class="feature-card">
+        <div class="feature-top"><span>入口</span><strong>构思</strong></div>
+        <h3>我还没写</h3>
+        <p>从题目与素材开始，生成构思建议与写作角度。</p>
+        <button class="primary" type="button" data-goto="brainstorm">去构思</button>
+      </article>
+      <article class="feature-card">
+        <div class="feature-top"><span>入口</span><strong>体检</strong></div>
+        <h3>作文体检</h3>
+        <p>粘贴草稿，得到结构与语言问题清单。</p>
+        <button class="primary" type="button" data-goto="revise">去体检</button>
+      </article>
+      <article class="feature-card">
+        <div class="feature-top"><span>入口</span><strong>修改</strong></div>
+        <h3>局部修改</h3>
+        <p>按目标生成局部修改建议与示范句。</p>
+        <button class="primary" type="button" data-goto="revise">去修改</button>
+      </article>
+      <article class="feature-card">
+        <div class="feature-top"><span>入口</span><strong>训练</strong></div>
+        <h3>个性化训练</h3>
+        <p>创建 7 天训练计划与专项训练营。</p>
+        <button class="primary" type="button" data-goto="training">去训练</button>
+      </article>
+    </section>
+
+    <section class="workspace">
+      <aside class="side-nav" aria-label="功能入口">
+        <button class="nav-item active" type="button" data-view="dashboard">总览</button>
+        <button class="nav-item" type="button" data-view="brainstorm">我还没写</button>
+        <button class="nav-item" type="button" data-view="revise">我写完了</button>
+        <button class="nav-item" type="button" data-view="materials">素材库</button>
+        <button class="nav-item" type="button" data-view="training">训练计划</button>
+        <button class="nav-item" type="button" data-view="growth">成长</button>
+        <button class="nav-item" type="button" data-view="notebook">错因本</button>
+      </aside>
+
+      <div class="view-stack">
+        <section class="view active" id="view-dashboard" aria-labelledby="overviewTitle">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Dashboard</p>
+              <h2 id="overviewTitle">学习总览</h2>
+            </div>
+          </div>
+          <div class="two-column">
+            <article class="panel">
+              <h3>今日任务</h3>
+              <div id="taskList" class="task-list"></div>
+            </article>
+            <article class="panel">
+              <h3>能力画像</h3>
+              <div id="abilityList" class="ability-list"></div>
+            </article>
+          </div>
+          <article class="panel">
+            <h3>最近作文问题</h3>
+            <div class="issue-grid" id="recentIssues"></div>
+          </article>
+        </section>
+
+        <section class="view" id="view-brainstorm" aria-labelledby="brainstormTitle">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Brainstorm</p>
+              <h2 id="brainstormTitle">我还没写，帮我构思</h2>
+            </div>
+          </div>
+          <div class="form-grid">
+            <label class="icon-field">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 5h16v2H4zm0 6h10v2H4zm0 6h7v2H4z"/></svg>
+              作文题目
+              <input id="topicInput" type="text" placeholder="请输入作文题目">
+            </label>
+            <label class="icon-field">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3l9 4-9 4-9-4 9-4zm0 7l9 4-9 4-9-4 9-4z"/></svg>
+              年级
+              <select id="gradeInput">
+                <option value="" selected>请选择年级</option>
+                <option>初一</option>
+                <option>初二</option>
+                <option>初三</option>
+                <option>高一</option>
+                <option>高二</option>
+                <option>高三</option>
+              </select>
+            </label>
+            <label class="icon-field">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 6h16v12H4z"/></svg>
+              文体
+              <select id="genreInput">
+                <option value="" selected>请选择文体</option>
+                <option>记叙文</option>
+                <option>议论文</option>
+                <option>读后感</option>
+                <option>材料作文</option>
+              </select>
+            </label>
+          </div>
+          <label class="full-field icon-field">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="7"/></svg>
+            我想到的一点真实素材
+            <textarea id="materialInput" rows="5" placeholder="请输入真实素材，可为空"></textarea>
+          </label>
+          <div class="actions">
+            <button class="primary" type="button" id="buildOutlineBtn">生成构思建议</button>
+          </div>
+          <div id="brainstormResult" class="result-area"></div>
+        </section>
+
+        <section class="view" id="view-revise" aria-labelledby="reviseTitle">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Revise</p>
+              <h2 id="reviseTitle">我写完了，帮我修改</h2>
+            </div>
+          </div>
+          <div class="form-grid">
+            <label>
+              修改目标
+              <select id="reviseGoalInput">
+                <option value="" selected>请选择修改目标</option>
+                <option>变具体</option>
+                <option>结构更清楚</option>
+                <option>语言更自然</option>
+                <option>减少空话</option>
+                <option>保持原意</option>
+              </select>
+            </label>
+            <label>
+              修改深度
+              <select id="reviseDepthInput">
+                <option value="" selected>请选择修改深度</option>
+                <option>只给建议</option>
+                <option>局部示范</option>
+                <option>生成复盘</option>
+              </select>
+            </label>
+          </div>
+          <label class="full-field icon-field">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/></svg>
+            作文草稿
+            <textarea id="draftInput" rows="10" placeholder="请粘贴作文草稿"></textarea>
+          </label>
+          <div class="actions">
+            <button class="primary" type="button" id="diagnoseBtn">生成体检报告</button>
+            <button type="button" id="suggestBtn">生成局部修改建议</button>
+          </div>
+          <div id="reviseResult" class="result-area"></div>
+        </section>
+
+        <section class="view" id="view-materials" aria-labelledby="materialsTitle">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Material Library</p>
+              <h2 id="materialsTitle">作文素材库</h2>
+            </div>
+          </div>
+          <div class="form-grid">
+            <label>
+              素材标题
+              <input id="materialTitleInput" type="text" placeholder="给这张素材卡起个标题">
+            </label>
+            <label>
+              场景分类
+              <select id="materialSceneInput">
+                <option value="" selected>请选择分类</option>
+                <option>校园</option>
+                <option>家庭</option>
+                <option>朋友</option>
+                <option>挫折</option>
+                <option>观察</option>
+                <option>读书</option>
+                <option>社会</option>
+              </select>
+            </label>
+            <label>
+              适合题目
+              <input id="materialTopicInput" type="text" placeholder="可关联的作文题目">
+            </label>
+          </div>
+          <label class="full-field">
+            真实事件和细节
+            <textarea id="materialDetailInput" rows="7" placeholder="记录人物、时间、地点、动作、对话、感受和感官细节"></textarea>
+          </label>
+          <div class="actions">
+            <button class="primary" type="button" id="saveMaterialBtn">生成素材卡</button>
+          </div>
+          <div id="materialResult" class="result-area"></div>
+        </section>
+
+        <section class="view" id="view-training" aria-labelledby="trainingTitle">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Training Plan</p>
+              <h2 id="trainingTitle">7 天训练计划</h2>
+            </div>
+          </div>
+          <div id="trainingPlan" class="plan-grid"></div>
+          <article class="panel">
+            <h3>专项能力训练营</h3>
+            <div id="trainingCamps" class="feature-grid"></div>
+          </article>
+        </section>
+
+        <section class="view" id="view-growth" aria-labelledby="growthTitle">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Growth</p>
+              <h2 id="growthTitle">能力诊断与成长地图</h2>
+            </div>
+          </div>
+          <div class="two-column">
+            <article class="panel">
+              <h3>初始能力测评</h3>
+              <label class="full-field">
+                最近一篇作文
+                <textarea id="assessmentInput" rows="7" placeholder="粘贴一篇作文，用于生成能力画像"></textarea>
+              </label>
+              <button class="primary" type="button" id="assessmentBtn">生成能力画像</button>
+              <div id="assessmentResult" class="result-area"></div>
+            </article>
+            <article class="panel">
+              <h3>文风档案</h3>
+              <label class="full-field">
+                个人旧作文样本
+                <textarea id="styleSampleInput" rows="7" placeholder="粘贴1-3段自己的旧作文，用于总结写作习惯"></textarea>
+              </label>
+              <button type="button" id="styleProfileBtn">生成写作习惯卡</button>
+              <div id="styleProfileResult" class="result-area"></div>
+            </article>
+          </div>
+          <div class="two-column">
+            <article class="panel">
+              <h3>阶段测评</h3>
+              <div id="stageReview" class="empty-state">暂无阶段复盘。完成训练任务后会显示本周提升、反复问题和下阶段重点。</div>
+            </article>
+            <article class="panel">
+              <h3>成长地图</h3>
+              <div id="growthMap" class="growth-map"></div>
+            </article>
+          </div>
+          <article class="panel">
+            <h3>AI 使用边界</h3>
+            <div id="usageBoundary" class="boundary-grid"></div>
+          </article>
+        </section>
+
+        <section class="view" id="view-notebook" aria-labelledby="notebookTitle">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Error Notebook</p>
+              <h2 id="notebookTitle">个人错因本</h2>
+            </div>
+          </div>
+          <div id="notebookList" class="notebook-list"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+<div id="authModal" class="modal-shell hidden" aria-hidden="true">
+    <div class="modal-card reveal">
+      <div class="modal-head">
+        <div>
+          <div class="panel-title">登录 / 注册</div>
+          <p id="authChannelHint" class="panel-subtitle">使用邮箱验证码登录。</p>
+        </div>
+        <button id="authCloseBtn" class="icon-btn" type="button" aria-label="关闭">×</button>
+      </div>
+      <label for="authTargetInput">邮箱</label>
+      <input id="authTargetInput" class="text-input" type="email" placeholder="例如 name@example.com" />
+      <div class="auth-row">
+        <div class="auth-code-wrap">
+          <label for="authCodeInput">验证码</label>
+          <input id="authCodeInput" class="text-input" type="text" maxlength="6" placeholder="6 位验证码" />
+        </div>
+        <button id="sendCodeBtn" class="ghost" type="button">发送验证码</button>
+      </div>
+      <div class="actions">
+        <button id="verifyCodeBtn" class="primary" type="button">登录 / 注册</button>
+        <a class="topbar-link" href="/account.html">查看个人中心</a>
+      </div>
+      <div id="authStatus" class="hint"></div>
+    </div>
+  <script defer src="./vendor-auth/auth-widget.js"></script>
+  <script defer src="./auth.js"></script>
+  <script defer src="./auth-adapter.js"></script>
+</body>
+</html>
+<!-- Subpages quick nav -->
