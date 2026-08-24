@@ -436,16 +436,7 @@ async function runStageReview(input = {}) {
   const allDone = tasks.length > 0 && tasks.every((task) => task.status === '已完成');
   if (allDone) review.planStatusUpdate = '已完成';
 
-  // 前端阶段复盘卡片读取的别名（summary/improvements/recurringIssues/nextFocus），原字段保留
-  const frontendAliases = {
-    title: `${plan.planType || '7d'}训练计划 · 阶段复盘`,
-    summary: review.reviewSummary,
-    improvements: review.improvedDimensions,
-    recurringIssues: review.persistentIssues,
-    nextFocus: review.nextPlanSuggestion ? [review.nextPlanSuggestion] : []
-  };
-
-  return { ...review, ...frontendAliases, degraded };
+  return { ...review, degraded };
 }
 
 // ====================================================================
@@ -485,21 +476,6 @@ function mergeErrorNotebookItem(items, item) {
 // 7. 成长轨迹（从 state 集合聚合，不再返回空数组占位）
 // ====================================================================
 
-// 能力阶段 → 前端成长地图六阶段（新手写作者...能稳定完成考场作文）的映射
-const GROWTH_STAGE_BY_ABILITY_STAGE = {
-  基础期: '新手写作者',
-  进阶期: '能写完整事件',
-  提升期: '能表达真实感受',
-  冲刺期: '能稳定完成考场作文'
-};
-
-// 成长事件统一带 title/description（前端时间线识别）与 event/details（旧字段保留）
-function growthEvent(date, event, details, stage) {
-  const item = { date, event, details, title: event, description: details };
-  if (stage) item.stage = stage;
-  return item;
-}
-
 function buildGrowthTimeline(input = {}) {
   const state = input.state || {};
   const userId = String(input.userId || '').trim();
@@ -513,34 +489,31 @@ function buildGrowthTimeline(input = {}) {
   const timeline = [];
 
   const profile = profiles[profiles.length - 1] || null;
-  // currentStage：前端成长地图据此高亮当前阶段（取前端六阶段命名）
-  const currentStage = profile ? (GROWTH_STAGE_BY_ABILITY_STAGE[profile.stage] || GROWTH_STAGE_BY_ABILITY_STAGE.基础期) : null;
   if (profile) {
-    timeline.push(growthEvent(
-      profile.updatedAt || profile.createdAt || '',
-      '完成能力测评',
-      `当前阶段：${profile.stage || '未知'}`,
-      currentStage
-    ));
+    timeline.push({
+      date: profile.updatedAt || profile.createdAt || '',
+      event: '完成能力测评',
+      details: `当前阶段：${profile.stage || '未知'}`
+    });
   }
 
   for (const plan of plans) {
-    timeline.push(growthEvent(
-      plan.createdAt || '',
-      '开始训练计划',
-      `${plan.planType || ''}计划，目标：${plan.goal || '综合提升'}`
-    ));
+    timeline.push({
+      date: plan.createdAt || '',
+      event: '开始训练计划',
+      details: `${plan.planType || ''}计划，目标：${plan.goal || '综合提升'}`
+    });
     if (plan.status === '已完成') {
-      timeline.push(growthEvent(plan.updatedAt || plan.createdAt || '', '完成训练计划', plan.goal || ''));
+      timeline.push({ date: plan.updatedAt || plan.createdAt || '', event: '完成训练计划', details: plan.goal || '' });
     }
   }
 
   for (const submission of submissions.slice(-10)) {
-    timeline.push(growthEvent(
-      submission.createdAt || '',
-      '完成训练任务',
-      `任务 ${submission.taskId || ''}`
-    ));
+    timeline.push({
+      date: submission.createdAt || '',
+      event: '完成训练任务',
+      details: `任务 ${submission.taskId || ''}`
+    });
   }
 
   timeline.sort((a, b) => String(a.date || '').localeCompare(String(b.date || '')));
@@ -557,14 +530,6 @@ function buildGrowthTimeline(input = {}) {
 
   const completedPlans = plans.filter((plan) => plan.status === '已完成').map((plan) => plan.planId || plan.id);
 
-  // 成长阶段序列（前端成长地图六阶段；未测评时由前端默认高亮第一步）
-  const stages = ['新手写作者', '能写完整事件', '能写具体细节', '能表达真实感受', '能独立修改作文', '能稳定完成考场作文']
-    .map((title) => ({ title, description: '', status: title === currentStage ? '进行中' : '' }));
-  if (currentStage) {
-    const current = stages.find((item) => item.title === currentStage);
-    if (current) current.active = true;
-  }
-
   // 徽章：按可验证的数据触发
   const badges = [];
   if (profile) badges.push('初识写作');
@@ -572,9 +537,8 @@ function buildGrowthTimeline(input = {}) {
   if (submissions.length >= 10) badges.push('练习达人');
   if (errorItems.length >= 5) badges.push('错题终结者');
 
-  const result = {
+  return {
     timeline,
-    stages,
     abilityChanges,
     completedPlans,
     essayMilestones: essaySessions.slice(-5).map((item) => ({
@@ -584,8 +548,6 @@ function buildGrowthTimeline(input = {}) {
     })),
     badges
   };
-  if (currentStage) result.currentStage = currentStage;
-  return result;
 }
 
 // ====================================================================
