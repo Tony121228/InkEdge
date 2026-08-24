@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>学习档案 - 墨锋InkEdge</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="./config.js"></script>
+  <script defer src="./api-client.js"></script>
+  <script defer src="./theme.js"></script>
+  <script defer src="./account.js"></script>
+</head>
+<body>
+  <div class="startup-splash" aria-hidden="true">
+    <div class="startup-paper-scene">
+      <div class="startup-paper">
+        <div class="paper-margin"></div>
+        <div class="paper-title">墨锋InkEdge</div>
+        <div class="paper-lines">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="paper-note">构思 · 体检 · 修改 · 复盘</div>
+      </div>
+      <div class="startup-pen"></div>
+    </div>
+  </div>
+
+  <header class="app-header">
+    <div class="brand">
+      <img src="./assets/app-icon.png" alt="" class="brand-icon">
+      <div>
+        <div class="brand-name">学习档案</div>
+        <div class="brand-subtitle">等待填写</div>
+      </div>
+    </div>
+    <nav class="top-actions" aria-label="页面导航">
+      <a href="./index.html">返回首页</a>
+      <button class="icon-button" data-theme-toggle type="button" title="切换模式" aria-label="切换模式">浅</button>
+    </nav>
+  </header>
+
+  <main class="shell">
+    <section class="dashboard-band">
+      <div class="dashboard-copy">
+        <p class="eyebrow">Student Profile</p>
+        <h1>学习档案尚未填写</h1>
+        <p>完成作文体检、训练任务或复盘后，这里会显示能力画像、训练计划、历史作文、素材卡和错因统计。</p>
+      </div>
+      <div class="today-board">
+        <div class="board-label">当前训练重点</div>
+        <div class="board-title">暂无</div>
+        <div class="progress-line"><span style="width:0%"></span></div>
+        <div class="board-meta">等待创建训练计划</div>
+      </div>
+    </section>
+
+    <section class="quick-grid">
+      <article class="stat-block">
+        <span>年级</span>
+        <strong>未填写</strong>
+      </article>
+      <article class="stat-block">
+        <span>训练计划</span>
+        <strong>暂无</strong>
+      </article>
+      <article class="stat-block">
+        <span>素材卡</span>
+        <strong>0 张</strong>
+      </article>
+      <article class="stat-block">
+        <span>已复盘作文</span>
+        <strong>0 篇</strong>
+      </article>
+    </section>
+
+    <section class="two-column">
+      <article class="panel">
+        <h2>能力画像</h2>
+        <div id="profileAbilities" class="ability-list"></div>
+      </article>
+      <article class="panel">
+        <h2>最近错因</h2>
+        <div id="profileIssues" class="notebook-list"></div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>历史作文</h2>
+      <div id="essayHistory" class="issue-grid"></div>
+    </section>
+  </main>
+</body>
+</html>

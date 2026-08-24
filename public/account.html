@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>墨锋InkEdge账户中心</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css?v=20260824a" />
+  <link rel="stylesheet" href="/account.css?v=20260824b" />
+</head>
+<body>
+  <div class="bg-orb bg-orb-a"></div>
+  <div class="bg-orb bg-orb-b"></div>
+
+  <header class="topbar reveal">
+    <div class="topbar-inner">
+      <a class="brandmark" href="/">
+        <span class="brandmark-kicker">墨锋InkEdge</span>
+        <strong>账户中心</strong>
+      </a>
+      <div class="topbar-actions">
+        <a class="topbar-link" href="/">返回检测页</a>
+        <button id="accountAuthTrigger" class="account-chip" type="button">
+          <span id="accountPageName">游客</span>
+          <small id="accountPageMeta">请先登录</small>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="panel reveal">
+      <div class="account-head">
+        <div>
+          <div class="panel-title">账户概览</div>
+          <p class="panel-subtitle">这里会展示你的登录方式、剩余算力、人工充值记录和调用流水。</p>
+        </div>
+        <div class="actions">
+          <button id="logoutBtn" class="ghost hidden" type="button">退出登录</button>
+        </div>
+      </div>
+
+      <div id="loginRequiredCard" class="account-empty hidden">
+        请先登录后查看个人中心。
+      </div>
+
+      <div id="accountContent" class="hidden">
+        <div class="overview-grid">
+          <article class="stat-card">
+            <span>剩余算力</span>
+            <strong id="powerBalanceValue">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>累计赠送</span>
+            <strong id="giftedPowerValue">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>累计充值</span>
+            <strong id="rechargedPowerValue">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>累计消耗</span>
+            <strong id="consumedPowerValue">0</strong>
+          </article>
+        </div>
+
+        <div class="account-grid">
+          <section class="panel">
+            <div class="account-row">
+              <div>
+                <div class="panel-title">基本信息</div>
+                <p class="panel-subtitle">账号使用邮箱验证码登录，算力由管理员核对转账后手动增加。</p>
+              </div>
+              <span id="roleBadge" class="badge">普通用户</span>
+            </div>
+            <div class="ledger-grid">
+              <article class="stat-card">
+                <span>用户名称</span>
+                <strong id="profileName">-</strong>
+              </article>
+              <article class="stat-card">
+                <span>邮箱</span>
+                <strong id="profileEmail">-</strong>
+              </article>
+              <article class="stat-card">
+                <span>登录方式</span>
+                <strong id="profilePhone">邮箱验证码</strong>
+              </article>
+              <article class="stat-card">
+                <span>注册时间</span>
+                <strong id="profileCreatedAt">-</strong>
+              </article>
+              <article class="stat-card">
+                <span>最近登录</span>
+                <strong id="profileLastLoginAt">-</strong>
+              </article>
+            </div>
+            <div class="profile-edit-form">
+              <div>
+                <label for="profileDisplayNameInput">用户名</label>
+                <input id="profileDisplayNameInput" class="text-input" type="text" maxlength="40" placeholder="请输入用户名" />
+              </div>
+              <button id="saveProfileBtn" class="primary" type="button">保存资料</button>
+            </div>
+            <div id="profileHint" class="hint"></div>
+          </section>
+
+          <section class="panel" id="recharge">
+            <div class="panel-title">微信转账充值</div>
+            <p class="panel-subtitle">使用微信个人经营收款码转账，备注自己的登录邮箱；管理员会按 1 元 = 2000 算力核对后人工增加算力。</p>
+            <div class="payment-rate">1 元人民币 = 2000 算力</div>
+            <div class="payment-box">
+              <img id="paymentQr" class="payment-qr" src="/assets/wechat-merchant-qr.jpg" alt="微信个人经营收款码" />
+              <div class="payment-copy">
+                <span id="paymentPayee">微信个人经营收款码</span>
+                <strong id="paymentRemark">-</strong>
+                <button id="copyRemarkBtn" class="ghost" type="button">复制联系方式</button>
+              </div>
+            </div>
+            <div id="rechargeHint" class="hint"></div>
+          </section>
+        </div>
+
+        <section id="adminPanel" class="panel hidden">
+          <div class="account-row">
+            <div>
+              <div class="panel-title">用户管理后台</div>
+              <p class="panel-subtitle">查看用户余额与流水概况，核对微信转账备注后为用户调整算力，也可以编辑用户名或删除其他账号。</p>
+            </div>
+            <div class="admin-search">
+              <input id="adminUserSearch" class="text-input" type="search" placeholder="搜索邮箱 / 用户名" />
+              <button id="adminRefreshBtn" class="ghost" type="button">刷新</button>
+            </div>
+          </div>
+          <div id="adminUserList" class="admin-user-list"></div>
+          <div id="adminGrantHint" class="hint"></div>
+        </section>
+
+        <details id="guestIpPanel" class="panel account-details-panel hidden">
+          <summary class="account-row account-panel-summary">
+            <div>
+              <div class="panel-title">临时IP管理后台</div>
+              <p class="panel-subtitle">只读查看未登录游客的临时试用额度记录。</p>
+            </div>
+            <span class="collapse-indicator" aria-hidden="true"></span>
+          </summary>
+          <div class="admin-readonly-toolbar">
+            <button id="guestIpRefreshBtn" class="ghost" type="button">刷新</button>
+          </div>
+          <div id="guestIpList" class="admin-guest-ip-list"></div>
+          <div id="guestIpHint" class="hint"></div>
+        </details>
+
+        <section class="panel">
+          <div class="panel-title">算力流水</div>
+          <p class="panel-subtitle">检测、改写、训练、注册赠送与人工调整算力都会生成流水。</p>
+          <div id="ledgerList" class="ledger-list"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div id="accountAuthModal" class="modal-shell hidden" aria-hidden="true">
+    <div class="modal-card reveal">
+      <div class="modal-head">
+        <div>
+          <div class="panel-title">登录 / 注册</div>
+          <p id="accountAuthHint" class="panel-subtitle">使用邮箱验证码登录。</p>
+        </div>
+        <button id="accountAuthCloseBtn" class="icon-btn" type="button" aria-label="关闭">×</button>
+      </div>
+      <label for="accountTargetInput">邮箱</label>
+      <input id="accountTargetInput" class="text-input" type="email" placeholder="例如 name@example.com" />
+      <div class="auth-row">
+        <div class="auth-code-wrap">
+          <label for="accountCodeInput">验证码</label>
+          <input id="accountCodeInput" class="text-input" type="text" maxlength="6" placeholder="6 位验证码" />
+        </div>
+        <button id="accountSendCodeBtn" class="ghost" type="button">发送验证码</button>
+      </div>
+      <div class="actions">
+        <button id="accountVerifyCodeBtn" class="primary" type="button">登录 / 注册</button>
+        <a class="topbar-link" href="/">回到首页</a>
+      </div>
+      <div id="accountAuthStatus" class="hint"></div>
+    </div>
+  </div>
+
+  <script src="/account.js?v=20260614b"></script>
+</body>
+</html>

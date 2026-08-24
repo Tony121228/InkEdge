@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "maxPromptRules": 8,
+  "rules": [
+    {
+      "id": "essay_throat_clearing",
+      "category": "opening_filler",
+      "patterns": ["在我们的生活中", "众所周知", "不可否认的是", "值得注意的是"],
+      "genres": ["all"],
+      "severity": "medium",
+      "action": "删去铺垫，直接进入原文已有的事件、观点或画面。",
+      "doNotEditWhen": "该短语后紧接的句子是全文唯一的必要背景。"
+    },
+    {
+      "id": "essay_binary_shell",
+      "category": "formulaic_contrast",
+      "patterns": ["不是.*而是", "不仅.*更", "真正.*的是", "不在于.*在于"],
+      "genres": ["argument", "reflection", "growth"],
+      "severity": "high",
+      "action": "保留原有判断，改成直接、完整的陈述，不再搭建反转壳。",
+      "doNotEditWhen": "该对比承担了原文明确的论证关系且删后论点失真。"
+    },
+    {
+      "id": "essay_rigid_enumeration",
+      "category": "template_sequence",
+      "patterns": ["首先.*其次", "其次.*最后", "一方面.*另一方面"],
+      "genres": ["argument", "reflection"],
+      "severity": "medium",
+      "action": "合并相邻步骤或改为自然过渡，保留原有论证顺序。",
+      "doNotEditWhen": "记叙文中这些词用于真实时间顺序或操作步骤。"
+    },
+    {
+      "id": "essay_inflated_significance",
+      "category": "abstract_inflation",
+      "patterns": ["意义深远", "不可磨灭", "时代的", "绽放.*光芒", "奔赴.*远方", "未来可期"],
+      "genres": ["all"],
+      "severity": "high",
+      "action": "删去宏大判断，或落回原文已有的动作、画面、认识和感受。",
+      "doNotEditWhen": "原文主题本身需要保留的固定引用或题目关键词。"
+    },
+    {
+      "id": "essay_vague_authority",
+      "category": "unsupported_attribution",
+      "patterns": ["研究表明", "专家认为", "数据显示", "有人说"],
+      "genres": ["argument", "reflection"],
+      "severity": "high",
+      "action": "仅保留有原文来源的表述；没有来源时删去或改成作者自己的已有判断。",
+      "doNotEditWhen": "原文同时给出了可核验的来源、作者或具体材料。"
+    },
+    {
+      "id": "essay_three_part_stack",
+      "category": "parallel_stack",
+      "patterns": ["[，、][^。！？]{2,8}[，、][^。！？]{2,8}[，、][^。！？]{2,8}"],
+      "genres": ["all"],
+      "severity": "low",
+      "action": "只在连续多处排比且没有信息增量时压缩；保留必要并列细节。",
+      "doNotEditWhen": "描写对象、事件材料或题目要求本身包含三项必要内容。"
+    },
+    {
+      "id": "essay_even_rhythm",
+      "category": "rhythm",
+      "patterns": ["sentence_length_variance_low"],
+      "genres": ["all"],
+      "severity": "medium",
+      "action": "只改一两句的句式或分句边界，形成自然长短变化。",
+      "doNotEditWhen": "短句是人物对话、题记、引用或刻意营造的节奏。"
+    },
+    {
+      "id": "essay_lecture_marker",
+      "category": "assistant_or_lecture_voice",
+      "patterns": ["下面我们", "接下来", "我们可以看到", "由此可见", "总的来说", "综上所述"],
+      "genres": ["all"],
+      "severity": "medium",
+      "action": "去掉路标或把结论接回前文，不解释自己正在写作。",
+      "doNotEditWhen": "该词是竞赛或课堂任务明确要求的论证结构。"
+    },
+    {
+      "id": "essay_generic_ending",
+      "category": "ending_slogan",
+      "patterns": ["让我明白了.*道理", "成长的力量", "勇敢前行", "迎接美好的未来"],
+      "genres": ["narrative", "reflection", "growth"],
+      "severity": "high",
+      "action": "把结尾落在已有事件后的一个朴素认识或画面，删去重复上价值。",
+      "doNotEditWhen": "原文最后一句包含不可替代的题目关键词，且没有重复拔高。"
+    },
+    {
+      "id": "essay_promotion_adjectives",
+      "category": "promotional_language",
+      "patterns": ["令人赞叹", "无与伦比", "丰富多彩", "独特魅力", "熠熠生辉"],
+      "genres": ["scenery", "object", "all"],
+      "severity": "medium",
+      "action": "删去堆叠形容词，保留原文已有的观察和具体描写。",
+      "doNotEditWhen": "形容词是人物原话、诗句或关键意象的一部分。"
+    },
+    {
+      "id": "essay_em_dash_density",
+      "category": "punctuation_template",
+      "patterns": ["em_dash_density_high"],
+      "genres": ["all"],
+      "severity": "low",
+      "action": "只有同一段出现两处以上且都承担弱转折时，改为逗号、句号或直接删去。",
+      "doNotEditWhen": "单次破折号用于引用、解释或题目格式。"
+    },
+    {
+      "id": "essay_false_interaction",
+      "category": "chatbot_ending",
+      "patterns": ["你觉得呢[？?]", "你有没有.*经历[？?]", "希望这能帮到你"],
+      "genres": ["all"],
+      "severity": "high",
+      "action": "删掉聊天式结尾，让文章在原有观点或画面处结束。",
+      "doNotEditWhen": "原文是演讲稿、书信或题目明确要求互动。"
+    }
+  ]
+}

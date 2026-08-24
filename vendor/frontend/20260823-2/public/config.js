@@ -1,0 +1,6 @@
+window.ESSAY_COACH_CONFIG = {
+  API_BASE_URL: '',
+  API_PREFIX: '/api/v1',
+  USE_BACKEND: false,
+  REQUEST_TIMEOUT_MS: 20000
+};

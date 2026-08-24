@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>专项能力训练营</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <nav class="app-nav">
+      <a class="nav-item" href="/index.html">首页</a>
+      <a class="nav-item" href="/training-plans.html">训练计划</a>
+      <a class="nav-item active" href="/training-camps.html">专项训练营</a>
+    </nav>
+  </header>
+
+  <main class="app-main">
+    <section class="board">
+      <div class="board-top">
+        <h2>专项能力训练营</h2>
+        <div class="board-title">选择一个能力重点，自动生成 7 天训练计划。</div>
+      </div>
+      <div class="board-grid" id="campList"></div>
+    </section>
+  </main>
+
+  <script src="/theme.js"></script>
+  <script src="/config.js"></script>
+  <script src="/api-client.js"></script>
+  <script src="/training-camps.js"></script>
+</body>
+</html>

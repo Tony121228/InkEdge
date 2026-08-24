@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "adaptation": "student-essay-humanizer",
+  "entries": [
+    {
+      "sourceTool": "humanizer-zh",
+      "sourceArea": "AI vocabulary, inflated significance, rule of three, generic conclusions",
+      "studentEssayChange": "从一律删除改为按体裁和密度处理；叙事时间词、必要的三项细节和已有抒情不自动判错。"
+    },
+    {
+      "sourceTool": "shuorenhua",
+      "sourceArea": "protected spans, scene guardrails, Chinese phrase and structure audit",
+      "studentEssayChange": "事实库存、原文引用和叙事顺序设为受保护区；屏蔽社媒互动、职场黑话和互联网口吻的改写方向。"
+    },
+    {
+      "sourceTool": "stop-slop",
+      "sourceArea": "filler removal, formula audit, rhythm rubric",
+      "studentEssayChange": "取消“删除所有副词/被动句/破折号”的硬禁令，改为检测密度、同构与信息贡献，避免把学生作文削得干硬。"
+    },
+    {
+      "sourceTool": "humanizer",
+      "sourceArea": "preserve facts, match voice, draft-audit-final loop",
+      "studentEssayChange": "将声音要求降为“朴素学生语体”，并接入项目既有事实审计与作者样本黑名单，禁止用新细节制造人味。"
+    },
+    {
+      "sourceTool": "humanizer-skill",
+      "sourceArea": "multi-pattern detection, quality scoring, audit loop",
+      "studentEssayChange": "采用命中后最小编辑和改后复检，不传递整套通用模式；评分新增作文完整度、体裁适配和事实安全。"
+    },
+    {
+      "sourceTool": "remove-ai-flavor-writing-skill",
+      "sourceArea": "Chinese template-shell audit: binary contrast, staged sequence, lecture markers, false interactive ending",
+      "studentEssayChange": "将其脚本化模板类别改写为作文规则；机械顺序只在议论文模板中扣分，记叙文的真实过程词不扣分。"
+    }
+  ]
+}

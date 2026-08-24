@@ -1,0 +1,29 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "ai-text-detector-counter-site",
+  "main": "./worker.mjs",
+  "workers_dev": true,
+  "preview_urls": true,
+  "compatibility_date": "2026-07-29",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "APP_STATE_DB",
+      "database_name": "ai-text-detector-state",
+      "database_id": "adc7440a-6e9d-49c5-9fb8-8d9ec2d9ebb0",
+      "migrations_dir": "./migrations"
+    }
+  ],
+  "vars": {
+    "CLOUDFLARE_WORKER": "true",
+    "ADMIN_EMAILS": "18008069236@163.com",
+    "WECHAT_PAY_QR_SRC": "/assets/wechat-merchant-qr.jpg",
+    "WECHAT_PAY_PAYEE": "微信个人经营收款码"
+  }
+}

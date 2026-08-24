@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "total": 100,
+  "dimensions": [
+    {
+      "id": "fact_safety",
+      "weight": 35,
+      "passCondition": "blocking unsupported claims 为 0。"
+    },
+    {
+      "id": "essay_integrity",
+      "weight": 25,
+      "passCondition": "保留文章的开端、展开、收束；长度符合体裁下限；未删除关键事件、论据或描写顺序。"
+    },
+    {
+      "id": "ai_pattern_reduction",
+      "weight": 20,
+      "passCondition": "高风险模板壳与原始检测高分维度显著减少，改后 AI 分数下降。"
+    },
+    {
+      "id": "student_naturalness",
+      "weight": 12,
+      "passCondition": "语体朴素、连贯，未转成营销文案、成人评论、社媒口吻或故意错误。"
+    },
+    {
+      "id": "rhythm_and_ending",
+      "weight": 8,
+      "passCondition": "句长不连续机械齐整，结尾不重复口号式拔高。"
+    }
+  ],
+  "genreLengthRatios": {
+    "narrative": { "min": 0.62, "max": 0.9 },
+    "scenery": { "min": 0.65, "max": 0.92 },
+    "reflection": { "min": 0.6, "max": 0.88 },
+    "argument": { "min": 0.58, "max": 0.84 },
+    "other": { "min": 0.6, "max": 0.9 }
+  },
+  "candidateGate": {
+    "reject": ["fact_safety blocking fail", "sample fact leakage", "internal instruction in essay"],
+    "warn": ["relaxed fact warning", "length below genre minimum", "remaining high-severity rule hit"],
+    "prefer": ["fact safety pass", "quality score >= 70", "AI score reduction >= 10"]
+  }
+}

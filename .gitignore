@@ -1,0 +1,16 @@
+.env
+data/app-state.json
+data/*.bak*
+data/*.json
+knowledge-base/training-log.jsonl
+docs/
+test/
+node_modules/
+npm-debug.log*
+vendor/humanizer-tools/raw/
+
+.codex-tmp/
+
+output/
+
+public/preview/

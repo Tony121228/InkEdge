@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>任务详情</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <nav class="app-nav">
+      <a class="nav-item" href="/index.html">首页</a>
+      <a class="nav-item" href="/training-plans.html">训练计划</a>
+      <a class="nav-item" href="/training-camps.html">专项训练营</a>
+    </nav>
+  </header>
+
+  <main class="app-main">
+    <section class="panel result-panel">
+      <h3 id="taskTitle">任务</h3>
+      <p id="taskMeta" class="soft-note"></p>
+      <p id="taskInstruction"></p>
+    </section>
+
+    <section class="panel result-panel">
+      <h3>提交内容</h3>
+      <textarea id="submission" rows="8" style="width:100%" placeholder="在此填写你的任务内容"></textarea>
+      <div style="margin-top:8px">
+        <button id="btnSubmit" class="primary">提交作业</button>
+        <button id="btnFeedback" class="primary hollow">获取反馈</button>
+      </div>
+      <div id="submitResult" class="soft-note"></div>
+    </section>
+
+    <section class="panel result-panel">
+      <h3>系统反馈</h3>
+      <div id="feedback"></div>
+    </section>
+  </main>
+
+  <script src="/theme.js"></script>
+  <script src="/config.js"></script>
+  <script src="/api-client.js"></script>
+  <script src="/task.js"></script>
+</body>
+</html>

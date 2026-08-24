@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 112" role="img" aria-label="作文痕迹雷达">
+  <defs>
+    <linearGradient id="textA" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7fbff"/>
+      <stop offset="0.54" stop-color="#dfeeff"/>
+      <stop offset="1" stop-color="#9ff8f0"/>
+    </linearGradient>
+    <filter id="glowA" x="-8%" y="-34%" width="116%" height="168%">
+      <feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#050b16" flood-opacity="0.68"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#47d2c5" flood-opacity="0.32"/>
+    </filter>
+  </defs>
+  <text x="2" y="78"
+    font-family="Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif"
+    font-size="70"
+    font-weight="900"
+    letter-spacing="1"
+    fill="url(#textA)"
+    stroke="#10213a"
+    stroke-width="2"
+    paint-order="stroke fill"
+    filter="url(#glowA)">作文痕迹雷达</text>
+  <path d="M7 92 H388 C416 92 436 88 455 76" fill="none" stroke="#47d2c5" stroke-width="5" stroke-linecap="round" opacity="0.92" filter="url(#glowA)"/>
+  <circle cx="455" cy="76" r="5" fill="#47d2c5" opacity="0.96" filter="url(#glowA)"/>
+</svg>

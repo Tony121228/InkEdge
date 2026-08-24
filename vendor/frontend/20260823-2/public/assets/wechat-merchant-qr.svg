@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="720" viewBox="0 0 720 720" role="img" aria-labelledby="title desc">
+  <title id="title">微信个人经营收款码占位图</title>
+  <desc id="desc">请将此文件替换为真实微信个人经营收款码。</desc>
+  <rect width="720" height="720" fill="#f5fff8"/>
+  <rect x="48" y="48" width="624" height="624" rx="24" fill="#fff" stroke="#17b35b" stroke-width="12"/>
+  <g fill="#151f1b">
+    <rect x="96" y="96" width="156" height="156"/>
+    <rect x="126" y="126" width="96" height="96" fill="#fff"/>
+    <rect x="150" y="150" width="48" height="48"/>
+    <rect x="468" y="96" width="156" height="156"/>
+    <rect x="498" y="126" width="96" height="96" fill="#fff"/>
+    <rect x="522" y="150" width="48" height="48"/>
+    <rect x="96" y="468" width="156" height="156"/>
+    <rect x="126" y="498" width="96" height="96" fill="#fff"/>
+    <rect x="150" y="522" width="48" height="48"/>
+    <rect x="300" y="102" width="36" height="36"/>
+    <rect x="360" y="102" width="72" height="36"/>
+    <rect x="300" y="162" width="108" height="36"/>
+    <rect x="336" y="222" width="36" height="72"/>
+    <rect x="420" y="300" width="72" height="36"/>
+    <rect x="540" y="300" width="36" height="108"/>
+    <rect x="300" y="336" width="72" height="36"/>
+    <rect x="396" y="384" width="36" height="72"/>
+    <rect x="480" y="420" width="144" height="36"/>
+    <rect x="300" y="480" width="36" height="144"/>
+    <rect x="360" y="504" width="72" height="36"/>
+    <rect x="456" y="504" width="36" height="96"/>
+    <rect x="540" y="540" width="84" height="84"/>
+  </g>
+  <rect x="150" y="318" width="420" height="84" rx="14" fill="#17b35b"/>
+  <text x="360" y="352" text-anchor="middle" font-size="25" font-family="Arial, 'Microsoft YaHei', sans-serif" font-weight="700" fill="#fff">请替换为真实微信</text>
+  <text x="360" y="384" text-anchor="middle" font-size="25" font-family="Arial, 'Microsoft YaHei', sans-serif" font-weight="700" fill="#fff">个人经营收款码</text>
+</svg>

@@ -1,0 +1,21 @@
+{
+  "name": "ai-text-detector-counter-site",
+  "version": "1.0.0",
+  "description": "墨锋InkEdge 墨锋InkEdge",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node --env-file-if-exists=.env --use-env-proxy server.js",
+    "start": "node --env-file-if-exists=.env --use-env-proxy server.js",
+    "test:essay-guidance": "node scripts/essay-guidance-api.test.js",
+    "test:essay-guidance-deepseek": "node scripts/essay-guidance-deepseek-api.test.js",
+    "test:essay-guidance-missing-key": "node scripts/essay-guidance-missing-key.test.js",
+    "test:short-guidance-frontend": "node scripts/short-guidance-frontend.test.js",
+    "test:long-term-ability": "node scripts/long-term-ability.test.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.1"
+  }
+}

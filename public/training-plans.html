@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>个性化训练计划</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <nav class="app-nav">
+      <a class="nav-item" href="/index.html">首页</a>
+      <a class="nav-item active" href="/training-plans.html">训练计划</a>
+      <a class="nav-item" href="/training-camps.html">专项训练营</a>
+    </nav>
+  </header>
+
+  <main class="app-main">
+    <section class="board">
+      <div class="board-top">
+        <h2 id="trainingTitle">个性化训练计划</h2>
+        <div class="board-title" id="planStatus">未创建</div>
+      </div>
+      <div class="board-grid">
+        <article class="plan-card">
+          <span>可创建</span>
+          <h3>7 天快速训练计划</h3>
+          <p>适合短期补齐一个主要短板。</p>
+          <button data-plan-type="7d" class="primary">生成 7 天计划</button>
+        </article>
+        <article class="plan-card">
+          <span>可创建</span>
+          <h3>14 天专项提升计划</h3>
+          <p>适合围绕审题、素材或结构持续练习。</p>
+          <button data-plan-type="14d" class="primary hollow">生成 14 天计划</button>
+        </article>
+        <article class="plan-card">
+          <span>可创建</span>
+          <h3>30 天作文成长计划</h3>
+          <p>适合建立长期训练节奏。</p>
+          <button data-plan-type="30d" class="primary hollow">生成 30 天计划</button>
+        </article>
+        <article class="plan-card">
+          <span>可创建</span>
+          <h3>考前 10 天冲刺计划</h3>
+          <p>适合围绕限时写作和复盘强化。</p>
+          <button data-plan-type="10d" class="primary hollow">生成 10 天计划</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel result-panel">
+      <h3>当前进行中的计划</h3>
+      <div id="activePlan" class="soft-note">暂无进行中的计划。</div>
+    </section>
+
+    <section class="panel result-panel">
+      <h3>今天的训练任务</h3>
+      <div id="todayTasks" class="soft-note">暂无今日任务。</div>
+    </section>
+  </main>
+
+  <script src="/theme.js"></script>
+  <script src="/config.js"></script>
+  <script src="/api-client.js"></script>
+  <script src="/training-plans.js"></script>
+</body>
+</html>
