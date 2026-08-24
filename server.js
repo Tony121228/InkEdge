@@ -85,7 +85,7 @@ app.use(express.static(path.join(BASE_DIR, 'public')));
 
 const MAX_CHARS = 5000;
 const DETECT_TIMEOUT_MS = 20000;
-const REWRITE_TIMEOUT_MS = 45000;
+const REWRITE_TIMEOUT_MS = 120000;
 const RETRY_COUNT = 2;
 const RETRY_DELAY_MS = 600;
 const VERIFY_CODE_TTL_MINUTES = 3;
