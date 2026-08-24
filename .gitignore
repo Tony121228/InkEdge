@@ -14,3 +14,6 @@ vendor/humanizer-tools/raw/
 output/
 
 public/preview/
+
+!test/部署-冒烟测试-1.md
+!docs/部署-Render-指南.md
