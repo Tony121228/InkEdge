@@ -1,12 +1,14 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "ai-text-detector-counter-site",
+  "name": "inkedge",
   "main": "./worker.mjs",
   "workers_dev": true,
   "preview_urls": true,
   "compatibility_date": "2026-07-29",
   "compatibility_flags": [
-    "nodejs_compat"
+    "nodejs_compat",
+    "enable_nodejs_http_server_modules",
+    "enable_nodejs_http_modules"
   ],
   "assets": {
     "directory": "./public",
@@ -15,15 +17,25 @@
   "d1_databases": [
     {
       "binding": "APP_STATE_DB",
-      "database_name": "ai-text-detector-state",
-      "database_id": "adc7440a-6e9d-49c5-9fb8-8d9ec2d9ebb0",
+      "database_name": "inkedge-state",
+      "database_id": "a8e34210-30b8-4984-b78c-a87760d5a7af",
       "migrations_dir": "./migrations"
+    }
+  ],
+  "routes": [
+    {
+      "pattern": "inkedge.aicreatorhome.cn/*",
+      "zone_name": "aicreatorhome.cn"
     }
   ],
   "vars": {
     "CLOUDFLARE_WORKER": "true",
-    "ADMIN_EMAILS": "18008069236@163.com",
-    "WECHAT_PAY_QR_SRC": "/assets/wechat-merchant-qr.jpg",
-    "WECHAT_PAY_PAYEE": "微信个人经营收款码"
+    "WECHAT_PAY_QR_SRC": "/assets/wechat-merchant-qr.example.svg",
+    "WECHAT_PAY_PAYEE": "微信个人经营收款码",
+    "AI_API_BASE_URL": "https://api.deepseek.com/v1",
+    "AI_DETECT_MODEL": "deepseek-chat",
+    "AI_REWRITE_MODEL": "deepseek-chat",
+    "AI_GUIDANCE_MODEL": "deepseek-chat"
   }
 }
+

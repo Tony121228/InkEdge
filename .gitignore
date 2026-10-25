@@ -1,9 +1,10 @@
 .env
-data/app-state.json
-data/*.bak*
-data/*.json
+.env.*
+!.env.example
+docs/SMTP配置.txt
+.wrangler/
+data/
 knowledge-base/training-log.jsonl
-docs/
 test/
 node_modules/
 npm-debug.log*
@@ -15,5 +16,11 @@ output/
 
 public/preview/
 
+.superpowers/
+*.backup-*
+
+# Private payment assets stay local and must never be published.
+public/assets/wechat-merchant-qr.jpg
+public/assets/wechat-merchant-qr.svg
+
 !test/部署-冒烟测试-1.md
-!docs/部署-Render-指南.md

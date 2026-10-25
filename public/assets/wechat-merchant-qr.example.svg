@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 640 640" role="img" aria-labelledby="title description">
+  <title id="title">收款码未配置</title>
+  <description id="description">公开源码不包含私人收款码，请通过私有部署资源配置。</description>
+  <rect width="640" height="640" fill="#f5f7fa"/>
+  <rect x="48" y="48" width="544" height="544" rx="24" fill="#ffffff" stroke="#cfd8e3" stroke-width="4"/>
+  <g fill="#27364a">
+    <rect x="136" y="136" width="96" height="96" rx="8"/>
+    <rect x="408" y="136" width="96" height="96" rx="8"/>
+    <rect x="136" y="408" width="96" height="96" rx="8"/>
+  </g>
+  <path d="M288 144h48v48h-48zm72 0h24v72h-24zm-72 96h96v24h-96zm0 48h48v48h-48zm72 0h48v24h-48zm-72 72h24v72h-24zm48 0h72v24h-72zm96-72h72v48h-24v-24h-48zm-96 120h48v96h-48zm72 24h96v72h-24v-48h-72z" fill="#60738b"/>
+  <text x="320" y="552" text-anchor="middle" fill="#344b63" font-family="Arial, sans-serif" font-size="24">私人收款码未随源码发布</text>
+</svg>

@@ -6,6 +6,41 @@ const path = require('path');
 
 const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'essay-guidance-deepseek-'));
 const calls = [];
+const completeTopicAngles = [
+  {
+    angleId: 'model_angle_1',
+    title: '在紧张中完成第一次独立表达',
+    prompt: '写自己从害怕上台到完整讲完的真实变化。',
+    whyThisFitsTopic: '前后心态和行动的变化能具体表现成长。',
+    materialConnection: '结合第一次独自面对众人、手心出汗和坚持讲完的经历。',
+    writingPath: '先写上台前的退缩，再写台上的具体动作，最后写完成后的变化。',
+    keyDetailsToAsk: ['上台前身体有什么反应？', '最想放弃时做了什么？'],
+    riskReminder: '不要只说自己很紧张，要写出真实动作。',
+    materialHint: '补充现场人物、身体感受和关键动作。'
+  },
+  {
+    angleId: 'model_angle_2',
+    title: '从等待别人帮助到主动承担',
+    prompt: '写一次面对难题时主动做事、不再依赖别人的经历。',
+    whyThisFitsTopic: '主动承担的行动能够证明人物真正发生变化。',
+    materialConnection: '从学习或生活中一次原本等待别人、后来亲自解决的经历切入。',
+    writingPath: '先写问题出现，再写自己按顺序做的事，最后写结果和新的做法。',
+    keyDetailsToAsk: ['当时本来想等谁来帮忙？', '你后来连续做了哪些事？'],
+    riskReminder: '不要用我长大了代替事件过程。',
+    materialHint: '补充触发点、动作顺序和事情结果。'
+  },
+  {
+    angleId: 'model_angle_3',
+    title: '在失败后主动找到问题',
+    prompt: '写一次失败后不再逃避，而是主动复盘并改变做法的经历。',
+    whyThisFitsTopic: '失败前后面对问题的态度和做法形成清楚对比。',
+    materialConnection: '结合一次考试、比赛或任务失利后查找原因的真实经历。',
+    writingPath: '先写失败后的反应，再写查找原因和改正的动作，最后写新变化。',
+    keyDetailsToAsk: ['失败后第一反应是什么？', '后来具体检查并改了什么？'],
+    riskReminder: '不要只写吸取了教训，要交代查找和改正过程。',
+    materialHint: '补充失败结果、复盘动作和改变证据。'
+  }
+];
 
 function listen(server) {
   return new Promise((resolve) => {
@@ -29,7 +64,7 @@ function responseFor(body) {
     return {
       topicKeywords: ['那一刻', '长大'],
       coreQuestion: '模型生成：抓住一个真实变化瞬间。',
-      possibleAngles: [{ angleId: 'model_angle_1', title: '模型立意', prompt: '写一次真实经历中的变化。', materialHint: '补人物、动作和对话。' }],
+      possibleAngles: completeTopicAngles,
       riskyAngles: [{ title: '空泛抒情', reason: '容易脱离事实。' }],
       suggestedNextQuestions: ['这件事发生在什么时候？']
     };
@@ -106,6 +141,17 @@ async function request(baseUrl, method, pathname, body) {
     assert.strictEqual(topic.status, 200);
     assert.strictEqual(topic.json.success, true);
     assert.strictEqual(topic.json.data.coreQuestion, '模型生成：抓住一个真实变化瞬间。');
+    assert.strictEqual(topic.json.data.possibleAngles.length, 3);
+    assert.deepStrictEqual(
+      topic.json.data.possibleAngles.map((angle) => angle.angleId),
+      ['model_angle_1', 'model_angle_2', 'model_angle_3']
+    );
+    topic.json.data.possibleAngles.forEach((angle) => {
+      for (const field of ['title', 'prompt', 'whyThisFitsTopic', 'materialConnection', 'writingPath', 'riskReminder', 'materialHint']) {
+        assert.ok(typeof angle[field] === 'string' && angle[field].trim(), `${angle.angleId}.${field} must be non-empty`);
+      }
+      assert.ok(Array.isArray(angle.keyDetailsToAsk) && angle.keyDetailsToAsk.length >= 1);
+    });
 
     const diagnose = await request(baseUrl, 'POST', `/api/v1/essay-sessions/${create.json.data.sessionId}/diagnose`, {
       title: '那一刻，我长大了',

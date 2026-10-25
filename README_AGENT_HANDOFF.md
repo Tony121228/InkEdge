@@ -1,6 +1,19 @@
 # 新 Agent 接手开发 README
 
-生成时间：2026-08-23
+生成时间：2026-08-23；结项状态补充：2026-10-25
+
+## 项目状态：已结项
+
+墨锋 InkEdge 本期项目已于 **2026-10-25** 正式结项，进入稳定维护、质量观察和下一版本规划阶段。本期范围已经冻结；后续新增功能、收费方案、教师端、班级端、小程序或原生 App 应另行立项，不应继续记作本期未完成项。
+
+结项后应优先阅读：
+
+- `docs/墨锋InkEdge项目结项确认书-2026-10-25.md`
+- `docs/reports/墨锋InkEdge项目结项完成进度报告-1.md`
+- `docs/墨锋InkEdge用户使用说明-2026-10-25.md`
+- `docs/墨锋InkEdge项目迭代数据与过程报告-2026-10-25.md`
+
+本文后续章节保留项目架构和历史接手信息。若其中关于算力、余额、游客额度或旧功能状态的描述与结项文档冲突，以当前源码和上述结项文档为准。
 
 本文面向第一次进入本仓库的 AI 编码 Agent。目标是让新 Agent 在不翻完整历史对话的情况下，快速理解项目架构、功能边界、代码职责、常见修改入口、验证方式和容易踩坑的规则。
 
@@ -10,15 +23,32 @@
 2. 本文件：项目结构、代码职责和接手指南。
 3. 当前用户本轮明确指定的方案文档或截图说明。
 
+## 当前阅读入口（2026-10-07）
+
+如需快速了解当前项目的完整产品范围、真实架构、页面职责、API 分组、状态模型、AI 调用链、部署方式、测试入口和后续开发边界，优先阅读：
+
+- `docs/当前项目全景与开发交接说明-2026-10-07.md`
+- `docs/reports/项目截至2026-10-06完成进度综合报告-1.md`
+
+本 README 保留较早的模块级接手说明，后续与当前源码冲突时以当前源码和上述全景文档为准。
+
+当前特别状态：参考稿真实模式质量已经进行一定修改。参考改写现在应同时使用局部修改建议和体检报告的 `priorityIssues`，并允许自由改写或重组事件、人物、细节、结构和表达，不再使用原文事实边界限制；当前代码仍保留 JSON 结果结构和 `changes` 说明。此前真实生成曾只做标点/衔接调整，因此后续工作必须在重启服务后重新进行真实模型和浏览器验收，不能把“已修改”直接写成“真实质量已通过”。
+
+当前计费边界（2026-10-07）：项目暂不使用算力计费。个人中心保留微信收款码图片，但不展示收费说明、费率、转账备注、余额、流水、临时 IP 额度或调额度入口；检测、改写和训练不再做余额检查或扣减。历史 D1 算力字段仅作为兼容数据保留，不进入用户响应和业务判断。已登录用户的作文、素材、能力、训练、成长和改写任务统一按真实账号 ID 归属，游客记录在登录成功时迁移到该账号。
+
 ## 一、项目一句话概览
 
-这是一个 Node.js + Express 单体应用，前端是静态 HTML/CSS/JS，核心功能是：
+这是一个 Node.js + Express 单体应用，前端是静态 HTML/CSS/JS，当前包含两条主要产品链：作文训练工作台和检测/改写工作台。核心功能是：
 
+- 从题目、年级、文体和真实素材开始，生成构思、追问、提纲和段落写作提示。
+- 进行作文体检、局部修改、参考稿对照和修改复盘。
+- 运行 7 天单篇作文训练计划并记录能力成长。
+- 保存和智能分类真实素材，生成适用题目和写作角度。
 - 输入中文作文或文本。
 - 检测 AI 痕迹风险。
 - 达到阈值后自动生成去 AI 味改写。
 - 支持强力、平衡、保守三种改写模式。
-- 支持账号登录、游客试用额度、管理员算力管理、临时 IP 额度查看。
+- 支持邮箱验证码账号登录、个人资料和管理员账号管理；当前不启用计费或算力额度。
 - 可部署到普通 Node 环境，也可通过 `worker.mjs` 包装部署到 Cloudflare Worker，并用 D1 保存云端状态。
 
 项目不是一个前后端分离工程，也没有 React/Vue 构建链。大多数功能改动会落在：
@@ -58,10 +88,20 @@ npm.cmd install
 npm.cmd run dev
 ```
 
-`package.json` 目前只有两个脚本：
+`package.json` 有两个运行脚本和多组回归/浏览器/真实 AI 测试脚本：
 
 - `npm run dev`
 - `npm start`
+
+常用测试脚本包括：
+
+- `npm run test:essay-guidance`
+- `npm run test:reference-comparison`
+- `npm run test:revision-fact-boundary`
+- `npm run test:training-plan-7d`
+- `npm run test:training-workspace-full-browser`
+- `npm run test:training-workspace-real-ai`
+- `npm run test:dashboard`
 
 两者都执行：
 
@@ -131,12 +171,12 @@ node --env-file-if-exists=.env --use-env-proxy server.js
 
 - `public/account.html`
   - 个人中心页面结构。
-  - 包括账号概览、充值说明、用户管理后台、临时 IP 管理后台、算力流水。
+  - 包括账号资料、微信收款码和管理员账号管理。
 
 - `public/account.js`
   - 个人中心全部交互逻辑。
-  - 包括登录、账号信息展示、算力流水、管理员用户列表、管理员调算力、临时 IP 管理后台。
-  - 如果“个人中心、管理员后台、算力显示、游客 IP 列表、登录时间、充值联系人”有问题，优先看这里。
+  - 包括登录、账号信息展示和管理员用户列表。
+  - 如果“个人中心、管理员后台、登录时间、账号资料”有问题，优先看这里。
 
 - `public/styles.css`
   - 全站样式。
@@ -254,17 +294,17 @@ node --env-file-if-exists=.env --use-env-proxy server.js
 - `scripts/rewrite-process-aggressive-null-fact-audit.test.js`
   - 确认强力模式 `factAudit = null` 时，`renderRewriteProcess()` 不崩溃，且编辑计划仍渲染。
 
-如果新增 bugfix，优先在 `scripts/` 增加一个最小可运行回归脚本。`test/` 目录目前被 `.gitignore` 忽略，更适合放本地冒烟报告和临时测试结果。
+如果新增 bugfix，优先在 `scripts/` 增加一个最小可运行回归脚本。`test/` 目录只保留历史报告、测试脚本或测试资产；后续新增测试报告、冒烟报告、部署验证报告和完成度检查报告统一保存到 `docs/reports/`。
 
 ### `docs/`
 
-项目方案、报告、迭代记录和参考资料目录。注意当前 `.gitignore` 忽略 `docs/`，但用户经常要求把大段报告保存到这里。是否提交以用户要求为准。
+项目方案、报告、迭代记录和参考资料目录。普通文档会进入版本控制；包含真实 SMTP 配置的 `docs/SMTP配置.txt` 必须保持忽略。
 
 常见参考：
 
 - `docs/作文参考资料/去AI 去味全网最全指南.docx`
 - `docs/全新40篇500字优秀作文（新一轮全套）.md`
-- 各类开发计划、冒烟测试报告、流程清单。
+- 各类开发计划、冒烟测试报告、部署验证报告、完成度检查报告和流程清单。
 
 ### `data/`
 
@@ -292,6 +332,13 @@ Cloudflare Worker 环境不依赖本地 `data/app-state.json`，而是通过 D1 
 - `rechargeOrders`
 - `rewriteTasks`
 - `authRateLimits`
+- `essaySessions`
+- `essayDiagnostics`
+- `essayMaterials`
+- `essayReflections`
+- `essayGuides`
+- `trainingPlans`
+- `trainingTaskSubmissions`
 
 本地：
 
@@ -322,7 +369,7 @@ Cloudflare：
 登录方式：
 
 - 邮箱验证码。
-- 管理员邮箱来自 `ADMIN_EMAILS`，默认管理员邮箱是 `18008069236@163.com`。
+- 管理员邮箱只来自环境变量或 Cloudflare Secret `ADMIN_EMAILS`，公开源码不得写入真实管理员邮箱。
 
 最近登录：
 
@@ -371,6 +418,40 @@ GET /api/admin/guest-ip-usages
 ### 主要 API
 
 当前 `server.js` 路由包括：
+
+作文训练与成长（`/api/v1`）：
+
+- `GET /api/v1/me`
+- `GET /api/v1/dashboard`
+- `POST /api/v1/style-profile`
+- `POST /api/v1/essay-sessions`
+- `GET /api/v1/essay-sessions/:sessionId`
+- `POST /api/v1/essay-sessions/:sessionId/topic-analysis`
+- `POST /api/v1/essay-sessions/:sessionId/material-questions`
+- `POST /api/v1/essay-sessions/:sessionId/materials`
+- `POST /api/v1/essay-sessions/:sessionId/outline`
+- `POST /api/v1/essay-sessions/:sessionId/guided-writing`
+- `POST /api/v1/essay-sessions/:sessionId/diagnose`
+- `POST /api/v1/essay-sessions/:sessionId/revision-suggestions`
+- `POST /api/v1/essay-sessions/:sessionId/reference-rewrite`
+- `POST /api/v1/essay-sessions/:sessionId/compare-drafts`
+- `POST /api/v1/essay-sessions/:sessionId/reflection`
+- `POST /api/v1/ability/initial-assessment`
+- `GET /api/v1/ability/profile`
+- `POST /api/v1/ability/profile/update-from-reflection`
+- `POST /api/v1/training-plans`
+- `GET /api/v1/training-plans/active`
+- `GET /api/v1/training-plans/:planId`
+- `POST /api/v1/training-plans/:planId/tasks/:taskId/run`
+- `POST /api/v1/training-plans/:planId/stage-review`
+- `GET /api/v1/training-tasks/today`
+- `GET /api/v1/training-tasks/:taskId`
+- `POST /api/v1/training-tasks/:taskId/submissions`
+- `POST /api/v1/training-tasks/:taskId/feedback`
+- `GET /api/v1/growth/timeline`
+- `POST /api/v1/training-camps/:campId/plans`
+
+账号和检测/改写路由：
 
 - `GET /api/me`
 - `POST /api/auth/send-code`
@@ -455,7 +536,7 @@ POST /api/rewrite-tasks
 
 超时：
 
-- 正式改写模型超时常量：`REWRITE_TIMEOUT_MS = 60000`。
+- 正式改写模型超时常量：`REWRITE_TIMEOUT_MS = 300000`（5 分钟）。
 
 ### 三种模式边界
 
@@ -621,7 +702,7 @@ http://localhost:3000/account.html
 - 模型调用失败要二次尝试，第二次仍失败才标记失败。
 - 冒烟测试不要污染真实 `data/app-state.json`。
 
-当前 `test/` 被 `.gitignore` 忽略，适合保存本地报告和机器 JSON。
+后续新增报告统一保存到 `docs/reports/`。`test/` 目录只保留历史报告、测试脚本或测试资产，不再作为新报告的默认保存位置。
 
 ## 十、常见修改需求应该改哪里
 
@@ -812,7 +893,7 @@ rg -n "(?i)(api[_-]?key|secret|password|passwd|smtp_pass|token|authorization|bea
 4. 改账号/算力/支付/认证时，同时检查前端和后端。
 5. 改公开页面时，检查桌面和移动端布局。
 6. 改作文检测/改写逻辑时，要做相应冒烟测试。
-7. 新增回归测试优先放 `scripts/`，除非是本地临时冒烟结果。
+7. 新增回归测试优先放 `scripts/`；新增冒烟报告、部署验证报告和完成度检查报告统一放 `docs/reports/`。
 8. 不要让本地降级结果混进模型改写成功统计。
 
 ## 十二、最近已知关键修复点

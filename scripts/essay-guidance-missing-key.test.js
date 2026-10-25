@@ -26,6 +26,15 @@ async function request(baseUrl, method, pathname, body) {
   return { status: response.status, json };
 }
 
+async function requestStatus(baseUrl, method, pathname, body) {
+  const response = await fetch(`${baseUrl}${pathname}`, {
+    method,
+    headers: { 'content-type': 'application/json' },
+    body: body ? JSON.stringify(body) : undefined
+  });
+  return { status: response.status, text: await response.text() };
+}
+
 (async () => {
   const server = await listen(app);
   const baseUrl = `http://127.0.0.1:${server.address().port}`;
@@ -58,9 +67,34 @@ async function request(baseUrl, method, pathname, body) {
     assert.strictEqual(guided.status, 503);
     assert.strictEqual(guided.json.success, false);
     assert.strictEqual(guided.json.error.code, 'MODEL_UNAVAILABLE');
+
+    const planCreate = await request(baseUrl, 'POST', '/api/v1/training-plans', {
+      planType: '7d',
+      title: '那一刻，我长大了',
+      grade: '初二',
+      genre: '记叙文'
+    });
+    assert.strictEqual(planCreate.status, 200);
+    const plan = planCreate.json.data;
+    const run = await request(baseUrl, 'POST', `/api/v1/training-plans/${plan.id}/tasks/${plan.days[0].taskId}/run`, {
+      input: { title: '那一刻，我长大了', grade: '初二', genre: '记叙文' }
+    });
+    assert.strictEqual(run.status, 200);
+    assert.strictEqual(run.json.data.artifact.localFallback, true);
+    assert.ok(Array.isArray(run.json.data.artifact.possibleAngles));
+    assert.ok(run.json.data.artifact.possibleAngles.length >= 1);
+
+    const removedNotebookGet = await requestStatus(baseUrl, 'GET', '/api/v1/error-notebook');
+    assert.strictEqual(removedNotebookGet.status, 404);
+
+    const removedNotebookPost = await requestStatus(baseUrl, 'POST', '/api/v1/error-notebook/items', {
+      issueType: '素材空泛'
+    });
+    assert.strictEqual(removedNotebookPost.status, 404);
   } finally {
     await new Promise((resolve) => server.close(resolve));
-    fs.rmSync(tempDir, { recursive: true, force: true });
+    const stateFile = path.join(tempDir, 'app-state.json');
+    if (fs.existsSync(stateFile)) fs.unlinkSync(stateFile);
   }
 })().catch((error) => {
   console.error(error);

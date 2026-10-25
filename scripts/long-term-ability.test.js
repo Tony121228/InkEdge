@@ -100,14 +100,28 @@ function fakeCallModelFactory(responseByTask) {
   // 5. 训练计划任务生成
   const planTasks = longTermAbility.buildTrainingPlanTasks({
     planType: '7d',
+    title: '那一刻，我长大了',
+    grade: '初二',
+    genre: '记叙文',
     dailyMinutes: 15,
-    focusDimensions: ['细节能力']
+    focusDimensions: ['素材具体度', '语言自然度']
   });
   assert.strictEqual(planTasks.tasks.length, 7);
-  assert.strictEqual(planTasks.tasks[0].taskType, '素材卡');
+  assert.deepStrictEqual(planTasks.tasks.map((task) => task.stageId), [
+    'topic_angle',
+    'material_questions',
+    'outline_tree',
+    'paragraph_guides',
+    'paragraph_drafting',
+    'draft_diagnosis',
+    'revision_reflection'
+  ]);
+  assert.strictEqual(planTasks.tasks[0].taskType, '构思');
   assert.strictEqual(planTasks.tasks[0].relatedDimension, '细节能力');
-  assert.strictEqual(planTasks.tasks[5].taskType, '修改复盘');
-  assert.strictEqual(planTasks.tasks[6].taskType, '素材卡'); // 轮转回到第一天类型
+  assert.strictEqual(planTasks.tasks[0].stageTitle, '审题与立意');
+  assert.ok(planTasks.tasks[0].inputSchema.fields.some((field) => field.name === 'title'));
+  assert.ok(planTasks.tasks[3].expectedOutput.includes('段落写作提示'));
+  assert.deepStrictEqual(planTasks.focusDimensions, ['细节能力', '语言能力']);
   // 非法 planType 回退 7d；非法维度被过滤
   const fallbackPlan = longTermAbility.buildTrainingPlanTasks({ planType: '999d', focusDimensions: ['不存在的维度'] });
   assert.strictEqual(fallbackPlan.totalDays, 7);
@@ -122,7 +136,7 @@ function fakeCallModelFactory(responseByTask) {
   const plan = { startDate: yesterdayStr, days: planTasks.tasks };
   const todayResult = longTermAbility.todayTasksFromPlan(plan);
   assert.strictEqual(todayResult.dayIndex, 1);
-  assert.strictEqual(todayResult.tasks[0].taskType, '审题');
+  assert.strictEqual(todayResult.tasks[0].stageId, 'material_questions');
   assert.strictEqual(todayResult.estimatedMinutes, 15);
   // 超出计划天数返回空
   const expired = longTermAbility.todayTasksFromPlan({ startDate: '2020-01-01', days: planTasks.tasks });
@@ -199,24 +213,13 @@ function fakeCallModelFactory(responseByTask) {
   const noPlan = await longTermAbility.runStageReview({ plan: null });
   assert.strictEqual(noPlan.error, 'PLAN_NOT_FOUND');
 
-  // 11. 错因库：同类累加 + 高频统计
-  let items = [];
-  items = longTermAbility.mergeErrorNotebookItem(items, { issueType: '素材不够具体', source: '作文诊断', evidence: 'a' });
-  items = longTermAbility.mergeErrorNotebookItem(items, { issueType: '素材不够具体', source: '作文诊断', evidence: 'b' });
-  items = longTermAbility.mergeErrorNotebookItem(items, { issueType: '结尾喊口号', source: '作文诊断' });
-  assert.strictEqual(items.length, 2);
-  assert.strictEqual(items[0].occurrenceCount, 2);
-  assert.strictEqual(items[0].evidence, 'b');
-  assert.deepStrictEqual(longTermAbility.topRecurringIssues(items), ['素材不够具体']);
-
-  // 12. 成长轨迹：从 state 聚合出真实数据
+  // 11. 成长轨迹：从 state 聚合出真实数据
   const timeline = longTermAbility.buildGrowthTimeline({
     userId: 'student001',
     state: {
       abilityProfiles: [{ userId: 'student001', stage: '进阶期', updatedAt: '2026-08-23 10:00:00', dimensionScores: { 审题能力: 70 } }],
       trainingPlans: [{ userId: 'student001', planType: '7d', goal: '中考备考', status: '已完成', createdAt: '2026-08-20 09:00:00', planId: 'p1' }],
       trainingTaskSubmissions: [{ userId: 'student001', taskId: 't1', createdAt: '2026-08-22 20:00:00' }],
-      errorNotebookItems: [{ userId: 'student001', issueType: 'a' }, { userId: 'student001', issueType: 'b' }, { userId: 'student001', issueType: 'c' }, { userId: 'student001', issueType: 'd' }, { userId: 'student001', issueType: 'e' }],
       essaySessions: [{ userId: 'student001', id: 's1', title: '雨中情', updatedAt: '2026-08-23 11:00:00' }]
     }
   });
@@ -228,7 +231,6 @@ function fakeCallModelFactory(responseByTask) {
   assert.ok(timeline.essayMilestones[0].title === '雨中情');
   assert.ok(timeline.badges.includes('初识写作'));
   assert.ok(timeline.badges.includes('坚持训练'));
-  assert.ok(timeline.badges.includes('错题终结者'));
   // 时间线按时间正序
   const dates = timeline.timeline.map((item) => item.date);
   const sorted = dates.slice().sort((a, b) => String(a).localeCompare(String(b)));

@@ -67,25 +67,14 @@ async function main() {
     const resp = await fetch(`http://127.0.0.1:${port}/api/admin/guest-ip-usages`, {
       headers: { cookie: `session_id=${sessionToken}` }
     });
-    assert.strictEqual(resp.status, 200);
+    assert.strictEqual(resp.status, 410);
     const data = await resp.json();
-    assert.strictEqual(data.ok, true);
-    assert.deepStrictEqual(data.records, [{
-      ipLabel: 'IP',
-      ip: '203.0.113.9',
-      remainingPower: 260,
-      lastSeenAt: '2026-08-15T08:30:00.000Z'
-    }, {
-      ipLabel: 'IPhash',
-      ip: 'hash-only-guest-ip',
-      remainingPower: 120,
-      lastSeenAt: '2026-08-15T07:30:00.000Z'
-    }]);
+    assert.strictEqual(data.ok, false);
+    assert.match(String(data.message || ''), /下线/);
   } finally {
     await new Promise((resolve) => server.close(resolve));
     const statePath = path.join(tmpDir, 'app-state.json');
     if (fs.existsSync(statePath)) fs.unlinkSync(statePath);
-    fs.rmdirSync(tmpDir);
   }
 }
 

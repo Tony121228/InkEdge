@@ -14,7 +14,7 @@
 
   function timeoutMs() {
     const value = Number(config.REQUEST_TIMEOUT_MS);
-    return Number.isFinite(value) && value > 0 ? value : 180000;
+    return Number.isFinite(value) && value > 0 ? value : 300000;
   }
 
   async function request(path, options = {}) {
@@ -70,6 +70,7 @@
     generateGuidedWriting: (sessionId, body) => request(`essay-sessions/${encodeURIComponent(sessionId)}/guided-writing`, { method: 'POST', body }),
     diagnoseEssay: (sessionId, body) => request(`essay-sessions/${encodeURIComponent(sessionId)}/diagnose`, { method: 'POST', body }),
     getRevisionSuggestions: (sessionId, body) => request(`essay-sessions/${encodeURIComponent(sessionId)}/revision-suggestions`, { method: 'POST', body }),
+    generateReferenceRewrite: (sessionId, body) => request(`essay-sessions/${encodeURIComponent(sessionId)}/reference-rewrite`, { method: 'POST', body }),
     compareDrafts: (sessionId, body) => request(`essay-sessions/${encodeURIComponent(sessionId)}/compare-drafts`, { method: 'POST', body }),
     createReflection: (sessionId, body) => request(`essay-sessions/${encodeURIComponent(sessionId)}/reflection`, { method: 'POST', body }),
     createStyleProfile: (body) => request('style-profile', { method: 'POST', body }),
@@ -83,9 +84,8 @@
     submitTrainingTask: (taskId, body) => request(`training-tasks/${encodeURIComponent(taskId)}/submissions`, { method: 'POST', body }),
     getTrainingFeedback: (taskId, body) => request(`training-tasks/${encodeURIComponent(taskId)}/feedback`, { method: 'POST', body }),
     createStageReview: (planId, body) => request(`training-plans/${encodeURIComponent(planId)}/stage-review`, { method: 'POST', body }),
+    runTrainingPlanTask: (planId, taskId, body) => request(`training-plans/${encodeURIComponent(planId)}/tasks/${encodeURIComponent(taskId)}/run`, { method: 'POST', body }),
     createCampPlan: (campId, body) => request(`training-camps/${encodeURIComponent(campId)}/plans`, { method: 'POST', body }),
-    getErrorNotebook: () => request('error-notebook'),
-    createErrorNotebookItem: (body) => request('error-notebook/items', { method: 'POST', body }),
     getGrowthTimeline: () => request('growth/timeline')
   };
 })();

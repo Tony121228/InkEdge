@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>InkEdge 投资人介绍稿</title>
+  <style>
+    :root { --ink:#14202b; --muted:#607080; --paper:#f7f4ec; --teal:#2d7d78; --mint:#bfe3d3; --orange:#ef9d58; --line:#d9d7cc; --white:#fffdf7; }
+    * { box-sizing:border-box; }
+    html { scroll-snap-type:y mandatory; background:#dfe5e2; }
+    body { margin:0; color:var(--ink); font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif; background:#dfe5e2; }
+    .deck { width:100%; }
+    .slide { min-height:100vh; padding:52px 7vw 42px; display:flex; flex-direction:column; justify-content:space-between; scroll-snap-align:start; position:relative; overflow:hidden; background:var(--paper); border-bottom:1px solid #c9d2cf; }
+    .slide:nth-child(even) { background:#eef3ef; }
+    .slide::before { content:""; position:absolute; width:280px; height:280px; border:1px solid rgba(45,125,120,.16); border-radius:50%; right:-90px; top:-100px; }
+    .eyebrow { color:var(--teal); font-weight:700; letter-spacing:.16em; font-size:12px; text-transform:uppercase; }
+    h1 { font-size:clamp(48px,7vw,92px); line-height:1.02; margin:10px 0 18px; letter-spacing:-.03em; }
+    h2 { font-size:clamp(30px,4vw,52px); line-height:1.08; margin:8px 0 18px; letter-spacing:-.02em; }
+    h3 { font-size:22px; margin:0 0 8px; }
+    p, li { font-size:18px; line-height:1.65; }
+    .lead { max-width:700px; font-size:22px; color:#344553; }
+    .footer { display:flex; justify-content:space-between; align-items:end; color:var(--muted); font-size:13px; }
+    .brand { display:flex; align-items:center; gap:12px; font-weight:800; }
+    .brand img { width:30px; height:30px; object-fit:contain; }
+    .hero-grid, .split, .three, .metric-row, .workflow { display:grid; gap:24px; }
+    .hero-grid { grid-template-columns:1.1fr .9fr; align-items:center; }
+    .split { grid-template-columns:1fr 1fr; align-items:start; }
+    .three { grid-template-columns:repeat(3,1fr); }
+    .metric-row { grid-template-columns:repeat(4,1fr); margin-top:26px; }
+    .metric { border-top:3px solid var(--teal); padding-top:12px; }
+    .metric strong { display:block; font-size:38px; color:var(--teal); }
+    .metric span { color:var(--muted); font-size:14px; }
+    .card { background:rgba(255,253,247,.76); border:1px solid var(--line); padding:22px; border-radius:12px; }
+    .dark-card { background:var(--ink); color:#eef5f0; border-radius:16px; padding:28px; }
+    .dark-card p, .dark-card li { color:#c8d9d4; }
+    .workflow { grid-template-columns:repeat(5,1fr); align-items:stretch; margin-top:24px; }
+    .step { background:#fffdf7; border:1px solid var(--line); padding:18px; border-radius:10px; position:relative; }
+    .step:not(:last-child)::after { content:"→"; position:absolute; right:-18px; top:40%; color:var(--orange); font-size:24px; z-index:2; }
+    .step b { color:var(--orange); font-size:13px; }
+    .step strong { display:block; margin:10px 0 6px; font-size:19px; }
+    .step span { color:var(--muted); font-size:14px; line-height:1.5; display:block; }
+    .placeholder { min-height:240px; border:2px dashed #8db5aa; background:rgba(191,227,211,.26); display:flex; align-items:center; justify-content:center; text-align:center; padding:28px; color:#4d7771; border-radius:14px; }
+    .placeholder strong { display:block; font-size:20px; margin-bottom:8px; }
+    .placeholder small { display:block; font-size:14px; line-height:1.5; }
+    .evidence { margin:0; }
+    .evidence-image { width:100%; max-height:520px; object-fit:contain; display:block; border:1px solid #c6d6d0; border-radius:12px; background:#fff; }
+    .evidence figcaption { margin-top:8px; color:var(--muted); font-size:13px; line-height:1.45; }
+    .note { margin-top:12px; padding:12px 14px; font-size:13px; line-height:1.5; color:#6a6f6a; background:#fff6e9; border-left:4px solid var(--orange); }
+    .tag { display:inline-block; padding:5px 10px; border-radius:999px; background:var(--mint); color:#1f5f59; font-size:13px; margin:4px 4px 0 0; }
+    ul { margin:10px 0 0; padding-left:22px; }
+    .timeline { display:grid; gap:14px; }
+    .timeline div { display:grid; grid-template-columns:110px 1fr; gap:16px; border-bottom:1px solid var(--line); padding-bottom:14px; }
+    .timeline b { color:var(--teal); }
+    .quote { font-size:28px; line-height:1.35; max-width:760px; font-weight:700; }
+    .small { font-size:14px; color:var(--muted); }
+    @media (max-width:800px) {
+      .slide { padding:34px 22px 28px; }
+      .hero-grid, .split, .three { grid-template-columns:1fr; }
+      .metric-row { grid-template-columns:repeat(2,1fr); }
+      .workflow { grid-template-columns:1fr; }
+      .step:not(:last-child)::after { content:"↓"; right:50%; top:auto; bottom:-25px; }
+      h1 { font-size:52px; }
+      p, li { font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck">
+    <section class="slide">
+      <div class="hero-grid">
+        <div>
+          <div class="brand"><img src="../public/assets/app-icon.png" alt="InkEdge" /> 墨锋 InkEdge</div>
+          <div class="eyebrow" style="margin-top:48px">Investor overview · 2026</div>
+          <h1>让作文训练<br><span style="color:var(--teal)">变成可持续的能力</span></h1>
+          <p class="lead">面向中小学生的中文作文训练与文本改进平台。InkEdge 把“写不出来”拆成可以练习、反馈和复盘的步骤。</p>
+        </div>
+        <div>
+          <figure class="evidence"><img class="evidence-image" src="../output/investor-demo/01-workspace-home.png" alt="作文训练工作台首页实测截图" /><figcaption>实测截图 01：页面完成加载后的作文训练工作台，展示导航、作文构思、作文修改和成长记录入口。</figcaption></figure>
+          <div class="note">演示备注：这一页只保留一句产品定义，截图应使用真实产品界面，不要放营销海报。</div>
+        </div>
+      </div>
+      <div class="footer"><span>墨锋 InkEdge</span><span>01 / 10</span></div>
+    </section>
+
+    <section class="slide">
+      <div>
+        <div class="eyebrow">Problem</div>
+        <h2>作文学习的难点，不在“有没有答案”</h2>
+        <p class="lead">学生真正缺少的是把题目、素材、结构和表达连接起来的过程反馈。</p>
+        <div class="three" style="margin-top:28px">
+          <div class="card"><h3>起笔困难</h3><p>面对题目不知道从哪里开始，真实经历无法转化为写作角度。</p></div>
+          <div class="card"><h3>反馈断层</h3><p>传统批改指出结果，却很少告诉学生下一步怎样练、怎样改。</p></div>
+          <div class="card"><h3>能力不可见</h3><p>一次作文的分数很难解释长期进步，家长也缺少连续记录。</p></div>
+        </div>
+      </div>
+      <div class="split"><figure class="evidence"><img class="evidence-image" src="../output/investor-demo/07-draft-written.png" alt="作文修改页面实测截图" /><figcaption>实测截图 02：作文修改页面中的真实作文草稿，作为用户进入修改流程的起点。</figcaption></figure><div class="dark-card"><div class="quote">InkEdge 关注的不是替学生写完，而是让学生知道下一步怎么写。</div><p>这决定了产品以训练过程、可解释反馈和成长记录为核心。</p></div></div>
+      <div class="footer"><span>用户问题</span><span>02 / 10</span></div>
+    </section>
+
+    <section class="slide">
+      <div>
+        <div class="eyebrow">Product loop</div>
+        <h2>一篇作文，拆成一条可完成的训练路径</h2>
+        <div class="workflow">
+          <div class="step"><b>01</b><strong>理解题目</strong><span>识别题眼、年级和文体要求</span></div>
+          <div class="step"><b>02</b><strong>选择立意</strong><span>从真实素材中找到可写角度</span></div>
+          <div class="step"><b>03</b><strong>组织结构</strong><span>形成提纲和分段写作提示</span></div>
+          <div class="step"><b>04</b><strong>完成草稿</strong><span>逐段输入，合并为完整作文</span></div>
+          <div class="step"><b>05</b><strong>体检复盘</strong><span>看到问题、修改并沉淀能力</span></div>
+        </div>
+      </div>
+      <div class="split"><figure class="evidence"><img class="evidence-image" src="../output/investor-demo/04-material-questions.png" alt="素材追问页面实测截图" /><figcaption>实测截图 03：从立意方向进入素材追问，展示构思流程中的真实问题卡片。</figcaption></figure><div><h3>产品设计原则</h3><ul><li>每一步都产生可保存的中间产物</li><li>反馈围绕下一次行动，而不是只给分数</li><li>模型负责提问、诊断和示范，学生保留表达主体</li></ul><figure class="evidence" style="margin-top:18px"><img class="evidence-image" src="../output/investor-demo/02-writing-guides.png" alt="写作引导页面截图" /><figcaption>实测截图 03B：提纲完成后的分段写作引导，放置于第 3 页右下区域。</figcaption></figure></div></div>
+      <div class="footer"><span>核心工作流</span><span>03 / 10</span></div>
+    </section>
+
+    <section class="slide">
+      <div>
+        <div class="eyebrow">Product modules</div>
+        <h2>从一次写作工具，扩展为长期训练系统</h2>
+        <div class="split" style="margin-top:24px">
+          <div class="card"><h3>作文训练工作台</h3><p>作文构思、素材库、7 天训练计划、能力诊断和成长记录。</p><span class="tag">学习过程</span><span class="tag">中小学生</span><span class="tag">长期数据</span></div>
+          <div class="card"><h3>检测与改写工作台</h3><p>AI 痕迹检测、作文体检、局部修改、参考稿对照和事实提醒。</p><span class="tag">文本质量</span><span class="tag">可解释反馈</span><span class="tag">编辑辅助</span></div>
+        </div>
+      </div>
+      <div class="split"><figure class="evidence"><img class="evidence-image" src="../output/investor-demo/08-writing-plan.png" alt="7天训练计划工作台实测截图" /><figcaption>实测截图 04A：7 天训练计划工作台入口与任务区。</figcaption></figure><figure class="evidence"><img class="evidence-image" src="../output/investor-demo/08-diagnostic-report.png" alt="作文体检报告与优先问题卡片实测截图" /><figcaption>实测截图 04B：作文体检报告与优先问题卡片。</figcaption></figure></div>
+      <div class="footer"><span>产品矩阵</span><span>04 / 10</span></div>
+    </section>
+
+    <section class="slide">
+      <div>
+        <div class="eyebrow">AI architecture</div>
+        <h2>模型负责生成，产品负责约束和解释</h2>
+        <p class="lead">InkEdge 不把模型输出直接交给用户，而是用本地规则、结构化合同和业务状态把结果变成可用的学习反馈。</p>
+        <div class="metric-row">
+          <div class="metric"><strong>本地</strong><span>文本指标与 AI 痕迹规则</span></div>
+          <div class="metric"><strong>模型</strong><span>写作指导与文本复核</span></div>
+          <div class="metric"><strong>结构化</strong><span>阶段产物与结果合同</span></div>
+          <div class="metric"><strong>可追溯</strong><span>体检、修改与成长记录</span></div>
+        </div>
+      </div>
+      <div class="split"><div class="dark-card"><h3>主要技术链路</h3><p>静态前端 → Express API → 业务模块 → OpenAI-compatible 模型 → 归一化结果 → D1 / 本地状态。</p></div><figure class="evidence"><img class="evidence-image" src="../output/investor-demo/08-diagnostic-report.png" alt="体检报告问题清单实测截图" /><figcaption>实测截图 05：体检报告问题清单与优先问题卡片，体现反馈的可解释性。</figcaption></figure></div>
+      <div class="footer"><span>AI 与工程壁垒</span><span>05 / 10</span></div>
+    </section>
+
+    <section class="slide">
+      <div>
+        <div class="eyebrow">User value</div>
+        <h2>学生、家长、教师看到的是同一条成长链</h2>
+        <div class="three" style="margin-top:28px">
+          <div class="card"><h3>学生</h3><p>知道题目怎么拆、素材怎么选、段落怎么写，也能看到自己反复出现的问题。</p></div>
+          <div class="card"><h3>家长</h3><p>看到训练过程和能力变化，不必只依赖一次考试或一次作文分数。</p></div>
+          <div class="card"><h3>教师与机构</h3><p>可以把作文训练拆成任务，获得更稳定的过程数据和个性化辅导入口。</p></div>
+        </div>
+      </div>
+      <div class="split"><figure class="evidence"><img class="evidence-image" src="../output/investor-demo/06-growth-records.png" alt="成长记录与能力诊断页面实测截图" /><figcaption>实测截图 06：成长记录页中的能力诊断、成长地图和阶段复盘入口。</figcaption></figure><div><h3>可持续使用的原因</h3><ul><li>每次作文都会留下结构化记录</li><li>下一次训练可以复用素材与反馈</li><li>产品价值从“生成一次结果”转向“持续提升”</li></ul></div></div>
+      <div class="footer"><span>用户价值</span><span>06 / 10</span></div>
+    </section>
+
+    <section class="slide">
+      <div>
+        <div class="eyebrow">Data & trust</div>
+        <h2>账号、数据和 AI 使用边界，构成信任底座</h2>
+        <div class="split" style="margin-top:24px">
+          <div class="card"><h3>账号绑定</h3><p>邮箱验证码登录，作文会话、素材、训练计划、能力画像和成长记录绑定真实账号。</p></div>
+          <div class="card"><h3>数据架构</h3><p>本地使用 JSON 状态，Cloudflare 使用 D1 的通用状态表；保留业务状态的可迁移性。</p></div>
+        </div>
+        <div class="split" style="margin-top:24px"><div class="card"><h3>AI 边界</h3><p>训练模式强调提问、诊断、示范和局部修改，不默认代写整篇作文。</p></div><div class="card"><h3>部署基础</h3><p>Node.js + Express 单体架构，可部署到 Cloudflare Worker，已有健康检查与部署脚本。</p></div></div>
+      </div>
+      <div class="split"><figure class="evidence"><img class="evidence-image" src="../output/investor-demo/07-personal-center.png" alt="个人中心页面实测截图" /><figcaption>实测截图 07：个人中心页面，展示登录状态与个人资料入口。</figcaption></figure><div class="note">截图选择建议：优先展示“账号与成长数据”的关系，避免把历史算力或充值界面作为产品卖点。</div></div>
+      <div class="footer"><span>信任与数据</span><span>07 / 10</span></div>
+    </section>
+
+    <section class="slide">
+      <div>
+        <div class="eyebrow">Business hypothesis</div>
+        <h2>商业化先围绕“持续训练价值”，而不是单次生成</h2>
+        <p class="lead">当前项目暂不采用算力计费。后续商业模式可在验证留存和训练效果后设计。</p>
+        <div class="three" style="margin-top:28px">
+          <div class="card"><h3>家庭订阅</h3><p>围绕个人成长档案、训练计划和长期反馈提供订阅服务。</p></div>
+          <div class="card"><h3>学校 / 机构</h3><p>面向班级或训练营提供任务编排、过程数据和教师辅助工具。</p></div>
+          <div class="card"><h3>能力服务</h3><p>在明确合规和隐私边界后，提供作文训练数据的分析与辅导服务。</p></div>
+        </div>
+      </div>
+      <div class="split"><figure class="evidence"><img class="evidence-image" src="../output/investor-demo/08-writing-plan.png" alt="7天训练计划阶段任务界面实测截图" /><figcaption>实测截图 08：7 天训练计划工作台，证明产品具备持续使用场景。</figcaption></figure><div class="dark-card"><h3>需要继续验证的指标</h3><p>训练完成率、7 天后回访率、同一用户的作文质量变化、家长或教师愿意付费的功能。</p></div></div>
+      <div class="footer"><span>商业化假设</span><span>08 / 10</span></div>
+    </section>
+
+    <section class="slide">
+      <div>
+        <div class="eyebrow">Progress</div>
+        <h2>核心 MVP 已形成，下一阶段是质量收口</h2>
+        <div class="timeline" style="margin-top:26px">
+          <div><b>已完成</b><span>作文构思、素材追问、提纲、段落提示、作文体检、局部修改和 7 天训练计划主体。</span></div>
+          <div><b>已完成</b><span>素材智能分类、能力诊断、成长数据聚合、账号登录、Cloudflare Worker 与 D1 部署基础。</span></div>
+          <div><b>待验收</b><span>参考稿真实模型质量、真实浏览器闭环、390px 移动端和最新线上版本一致性。</span></div>
+          <div><b>待调优</b><span>Day 5 逐段陪写、输入中间态保存、连续训练数据说服力和完整 UI/UX 清单。</span></div>
+        </div>
+      </div>
+      <div class="split"><figure class="evidence"><img class="evidence-image" src="../output/investor-demo/06-growth-records.png" alt="能力诊断与成长记录页面实测截图" /><figcaption>实测截图 09：能力诊断与成长记录页面，作为项目阶段成果的浏览器证据。</figcaption></figure><div class="note">投资人版建议把“已完成”和“待验收”同时展示，避免把开发完成度表述成最终商业验证。</div></div>
+      <div class="footer"><span>项目进展</span><span>09 / 10</span></div>
+    </section>
+
+    <section class="slide">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">Next step</div>
+          <h2>下一步：验证训练效果，建立可复制的增长路径</h2>
+          <p class="lead">InkEdge 已经具备从单次作文到长期训练的产品骨架。下一阶段需要真实用户、真实训练数据和真实付费反馈。</p>
+          <div class="dark-card" style="margin-top:24px"><h3>希望获得的支持</h3><p>产品试点学校或机构、教育场景顾问、真实用户测试样本，以及用于质量验证和商业化探索的资金支持。</p></div>
+        </div>
+        <div>
+          <figure class="evidence"><img class="evidence-image" src="../output/investor-demo/11-reference-comparison-result.png" alt="体检报告、局部修改与参考对照结果实测截图" /><figcaption>实测截图 10：参考对照结果页，包含体检问题、局部修改建议、原文与 AI 参考稿。</figcaption></figure>
+          <div class="note">结尾页不要堆联系方式。建议只保留项目名称、当前阶段和希望获得的合作类型，具体联系人可在演讲时口头补充。</div>
+        </div>
+      </div>
+      <div class="footer"><span>墨锋 InkEdge · Investor overview</span><span>10 / 10</span></div>
+    </section>
+  </main>
+</body>
+</html>

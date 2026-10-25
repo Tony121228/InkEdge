@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1220">
+  <title>参考对照 | 墨锋InkEdge</title>
+  <link rel="stylesheet" href="./reference-comparison.css">
+  <script defer src="./config.js"></script>
+  <script defer src="./api-client.js"></script>
+  <script defer src="./theme.js"></script>
+  <script defer src="./reference-comparison.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/app.html" aria-label="返回墨锋InkEdge工作台">
+      <img src="./assets/app-icon.png" alt="" width="36" height="36">
+      <span>墨锋InkEdge</span>
+    </a>
+    <a class="top-return" href="/app.html">返回工作台</a>
+    <button class="theme-toggle" data-theme-toggle type="button" title="切换到深色模式" aria-label="切换到深色模式">深</button>
+  </header>
+
+  <main class="page-shell">
+    <a class="back-link" href="/app.html"><span aria-hidden="true">←</span> 返回作文修改</a>
+    <header class="page-heading">
+      <p class="eyebrow">REFERENCE COMPARISON</p>
+      <h1>参考对照</h1>
+      <p class="intro">对照原文与参考稿，看看结构和表达可以怎样调整。</p>
+    </header>
+
+    <section class="context-bar" aria-label="作文信息">
+      <div>
+        <span class="context-label">作文标题</span>
+        <strong id="essayTitle">当前作文</strong>
+      </div>
+      <span id="generationStatus" class="status-pill" role="status" aria-live="polite">准备生成</span>
+    </section>
+
+    <section id="revisionSuggestionPanel" class="suggestion-source-panel" aria-labelledby="revisionSuggestionTitle" hidden>
+      <section id="priorityIssuesPanel" class="priority-issues-panel" aria-labelledby="priorityIssuesTitle" hidden>
+        <h3 id="priorityIssuesTitle">体检报告优先问题</h3>
+        <ul id="priorityIssuesList"></ul>
+      </section>
+      <h2 id="revisionSuggestionTitle">本次局部修改建议</h2>
+      <pre id="revisionSuggestionText"></pre>
+    </section>
+
+    <div id="errorPanel" class="error-panel" role="alert" hidden>
+      <p id="errorMessage"></p>
+      <button id="retryButton" class="button button-secondary" type="button">重试</button>
+    </div>
+
+    <section class="comparison-grid" aria-label="原文与参考稿对照" aria-busy="false">
+      <article class="essay-panel original-panel">
+        <header class="panel-heading">
+          <div>
+            <span class="panel-index">01</span>
+            <h2>作文原稿</h2>
+          </div>
+          <span class="panel-caption">你的草稿</span>
+        </header>
+        <div id="originalEssay" class="essay-text" aria-live="polite">
+          <p class="placeholder">正在读取作文内容…</p>
+        </div>
+      </article>
+
+      <article class="essay-panel reference-panel">
+        <header class="panel-heading">
+          <div>
+            <span class="panel-index">02</span>
+            <h2>AI 参考稿</h2>
+          </div>
+          <span class="panel-caption">仅供对照学习</span>
+        </header>
+        <div id="referenceEssay" class="essay-text" aria-live="polite">
+          <p class="placeholder">参考稿生成后会显示在这里。</p>
+        </div>
+      </article>
+    </section>
+
+    <section id="changeSummaryPanel" class="change-summary-panel" aria-labelledby="changeSummaryTitle" hidden>
+      <h2 id="changeSummaryTitle">本次改动说明</h2>
+      <ul id="changeSummaryList"></ul>
+    </section>
+
+    <footer class="page-actions">
+      <p class="disclaimer">参考稿用于观察修改思路，不替代你的定稿。请保留真实经历，并用自己的表达完成修改。</p>
+      <div class="action-buttons">
+        <button id="copyButton" class="button button-secondary" type="button" disabled>复制参考稿</button>
+        <button id="generateButton" class="button button-primary" type="button">生成参考稿</button>
+      </div>
+      <p id="copyStatus" class="copy-status" role="status" aria-live="polite"></p>
+    </footer>
+  </main>
+</body>
+</html>

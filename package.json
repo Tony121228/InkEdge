@@ -1,5 +1,5 @@
 {
-  "name": "ai-text-detector-counter-site",
+  "name": "inkedge",
   "version": "1.0.0",
   "description": "墨锋InkEdge 墨锋InkEdge",
   "main": "server.js",
@@ -7,15 +7,35 @@
     "dev": "node --env-file-if-exists=.env --use-env-proxy server.js",
     "start": "node --env-file-if-exists=.env --use-env-proxy server.js",
     "test:essay-guidance": "node scripts/essay-guidance-api.test.js",
+    "test:guided-writing-split": "node scripts/essay-guidance-guided-writing-split.test.js",
+    "test:essay-session-ownership": "node scripts/essay-session-ownership.test.js",
+    "test:material-library-ai": "node scripts/material-library-ai-classification.test.js",
+    "test:app-material-library-ui": "node scripts/app-material-library-ui.test.js",
+    "test:growth-timeline": "node scripts/growth-timeline-derived-events.test.js",
+    "test:revision-fact-boundary": "node scripts/revision-suggestions-fact-boundary.test.js",
     "test:essay-guidance-deepseek": "node scripts/essay-guidance-deepseek-api.test.js",
     "test:essay-guidance-missing-key": "node scripts/essay-guidance-missing-key.test.js",
+    "test:dashboard": "node scripts/dashboard-api.test.js",
     "test:short-guidance-frontend": "node scripts/short-guidance-frontend.test.js",
-    "test:long-term-ability": "node scripts/long-term-ability.test.js"
+    "test:auth-api-smoke": "node scripts/auth-api-smoke.test.js",
+    "test:brainstorm-angle-first-browser": "node scripts/brainstorm-angle-first-browser.test.js",
+    "test:essay-guidance-server-regression": "node scripts/essay-guidance-server-regression.test.js",
+    "test:long-term-ability": "node scripts/long-term-ability.test.js",
+    "test:training-plan-7d": "node scripts/training-plan-7d.test.js",
+    "test:training-workspace": "node scripts/training-plan-workspace-frontend.test.js",
+    "test:training-workspace-browser": "node scripts/training-plan-workspace-browser-smoke.test.js",
+    "test:training-workspace-full-browser": "node scripts/training-plan-workspace-full-browser-smoke.test.js",
+    "test:training-workspace-real-ai": "node --env-file-if-exists=.env --use-env-proxy scripts/training-plan-real-ai-browser-smoke.test.js",
+    "test:training-stage-real-ai": "node --env-file-if-exists=.env --use-env-proxy scripts/training-plan-real-ai-stage-smoke.test.js",
+    "test:training-guidance-quality": "node scripts/training-plan-guidance-quality.test.js",
+    "test:guidance-json-parse-no-retry": "node scripts/essay-guidance-model-json-parse-no-retry.test.js",
+    "test:reference-comparison": "node scripts/reference-comparison.test.js"
   },
   "dependencies": {
     "express": "^5.2.1"
   },
   "devDependencies": {
-    "playwright": "^1.62.1"
+    "playwright": "^1.62.1",
+    "wrangler": "^4.125.0"
   }
 }
